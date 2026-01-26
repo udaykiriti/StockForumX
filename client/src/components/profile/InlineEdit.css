@@ -1,0 +1,265 @@
+/* Inline Edit Display */
+.inline-edit-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    width: 100%;
+}
+
+.editable-text-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+    margin-left: -6px;
+    /* Offset padding */
+}
+
+.editable-text-container:hover {
+    background: #f1f2f3;
+}
+
+.editable-text-container p {
+    margin: 0;
+}
+
+.edit-icon-hover {
+    font-size: 12px;
+    color: #9199a1;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.editable-text-container:hover .edit-icon-hover {
+    opacity: 1;
+}
+
+/* Add Content Button */
+.add-content-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    /* Minimal padding */
+    background: transparent;
+    border: 1px solid transparent;
+    /* No visible border default */
+    border-radius: 3px;
+    color: #6a737c;
+    /* Ghost gray */
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-content-btn:hover {
+    background: rgba(0, 116, 204, 0.1);
+    color: #0074cc;
+}
+
+/* Edit Form */
+.inline-edit-active {
+    margin: 8px 0 16px;
+    width: 100%;
+}
+
+.expand-animation {
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.inline-edit-input,
+.inline-edit-textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #babfc4;
+    /* Neutral border */
+    border-radius: 3px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.15s;
+    margin-bottom: 8px;
+    background: white;
+}
+
+.inline-edit-input:focus,
+.inline-edit-textarea:focus {
+    border-color: #6cbbf7;
+    box-shadow: 0 0 0 4px rgba(0, 116, 204, 0.15);
+}
+
+.inline-edit-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.5;
+}
+
+.inline-edit-actions {
+    display: flex;
+    gap: 8px;
+    /* Tight gap */
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.inline-save-btn,
+.inline-cancel-btn {
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font-family: inherit;
+}
+
+/* Stack Overflow Primary Button Style */
+.inline-save-btn {
+    background-color: #0a95ff;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+.inline-save-btn:hover {
+    background-color: #0074cc;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Stack Overflow Ghost Button Style */
+.inline-cancel-btn {
+    background-color: transparent;
+    color: #6a737c;
+}
+
+.inline-cancel-btn:hover {
+    background-color: rgba(0, 116, 204, 0.1);
+    color: #0074cc;
+}
+
+/* Horizontal Layout for Status Edit */
+.status-edit-container {
+    display: flex;
+    align-items: center;
+    /* Center input and buttons vertically */
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.status-edit-container .inline-edit-input {
+    margin-bottom: 0;
+    /* Remove bottom margin in horizontal mode */
+    flex: 1;
+    /* Input takes available space */
+    min-width: 200px;
+}
+
+.status-edit-container .inline-edit-actions {
+    flex-shrink: 0;
+    margin: 0;
+    /* Align perfectly */
+}
+
+/* Hide char count in horizontal mode to save space, or style it absolutely? */
+.status-edit-container .char-count {
+    display: none;
+    /* Often cleaner for minimal one-liners */
+}
+
+/* Make buttons slightly more minimal/compact as requested */
+.inline-save-btn,
+.inline-cancel-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    height: 35px;
+    /* Fixed height to match input */
+    line-height: normal;
+}
+
+.char-count {
+    float: right;
+    font-size: 11px;
+    color: #9199a1;
+    margin-top: 6px;
+}
+
+/* Avatar Upload Styling */
+.avatar-upload-container {
+    width: 128px;
+    position: relative;
+}
+
+.avatar-display {
+    width: 128px;
+    height: 128px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Ensure overlay respects border radius */
+}
+
+.profile-avatar-img,
+.profile-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.profile-avatar-placeholder {
+    background: linear-gradient(135deg, #f48024 0%, #ff9a56 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+/* Camera Overlay */
+.avatar-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    opacity: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: opacity 0.2s;
+}
+
+.avatar-display:hover .avatar-upload-overlay {
+    opacity: 1;
+}
+
+.camera-icon {
+    transform: scale(0.8);
+    transition: transform 0.2s;
+}
+
+.avatar-upload-overlay:hover .camera-icon {
+    transform: scale(1.1);
+}

@@ -1,0 +1,398 @@
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #f8f9f9 0%, #ffffff 100%);
+    padding: 60px 0 80px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(244, 128, 36, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #f48024 0%, #ff9a56 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(244, 128, 36, 0.15);
+    border-color: var(--color-primary);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: var(--color-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stat-icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Main Feed Layout */
+.home-page {
+    padding-bottom: var(--spacing-2xl);
+}
+
+.feed-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--spacing-xl);
+    align-items: start;
+    padding-top: var(--spacing-xl);
+}
+
+.feed-main {
+    min-width: 0;
+}
+
+.feed-sidebar {
+    position: sticky;
+    top: 70px;
+    height: fit-content;
+    z-index: 10;
+}
+
+/* Feed Header */
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Dynamic vertical alignment */
+    margin-bottom: 24px;
+    /* Match sidebar widget bottom margin */
+    min-height: 45px;
+    /* Minimum height for consistency, but allows growth */
+    padding-bottom: 0;
+    border-bottom: none;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+    gap: 16px;
+}
+
+.feed-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.feed-controls {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* Filter buttons */
+.filter-btn {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.filter-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background: #e1ecf4;
+    color: #39739d;
+    border-color: #7aa7c7;
+}
+
+/* Sidebar Widgets - SO Style */
+.sidebar-widget {
+    background: #ffffff;
+    border: 1px solid #f1e5bc;
+    /* Yellowish border for "ignored" or custom widgets, using standard subtle layout here */
+    border-color: var(--border-color);
+    /* Reset to standard grey */
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.sidebar-widget:first-child {
+    /* The "Yellow Box" style for the first widget often seen on SO */
+    background-color: #fdf7e2;
+    border-color: #f1e5bc;
+}
+
+.sidebar-widget:first-child h3 {
+    background-color: #fbf3d5;
+    /* Slightly darker yellow header */
+    border-bottom-color: #f1e5bc;
+    color: #3b4045;
+}
+
+.sidebar-widget h3 {
+    background: #f8f9f9;
+    margin: 0;
+    padding: 12px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #525960;
+    border-bottom: 1px solid var(--border-color);
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 45px;
+}
+
+.widget-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-primary);
+}
+
+.widget-content {
+    padding: 16px 15px;
+}
+
+/* Quick Links */
+.quick-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.quick-link:hover {
+    background: #f8f9f9;
+    border-color: var(--color-primary);
+    transform: translateX(4px);
+}
+
+.link-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+/* Trending Stock Items */
+.trending-stock-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    text-decoration: none;
+    color: #0077cc;
+    border-bottom: 1px solid transparent;
+    /* No borders in list usually */
+}
+
+.sidebar-widget:first-child .trending-stock-item {
+    border-bottom-color: rgba(241, 229, 188, 0.5);
+    /* subtle border for yellow box */
+}
+
+.trending-stock-item:hover {
+    color: #0095ff;
+}
+
+.stock-symbol {
+    background-color: #e1ecf4;
+    color: #39739d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+.stock-change {
+    font-size: 12px;
+    font-weight: 700;
+    color: #525960;
+}
+
+.stock-change.positive {
+    color: #2f6f44;
+    /* Green */
+}
+
+.stock-change.negative {
+    color: #cf222e;
+    /* Red */
+}
+
+.view-more-link {
+    margin-top: 12px;
+    text-align: left;
+    /* SO links usually left aligned or inline */
+    font-size: 11px;
+}
+
+.sidebar-text {
+    font-size: 13px;
+    color: #3b4045;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.btn-full {
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .feed-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .feed-sidebar {
+        position: static;
+        /* No longer sticky on mobile */
+        display: block;
+        /* Show it at the bottom */
+        margin-top: var(--spacing-xl);
+        width: 100%;
+    }
+
+    .feed-sidebar .sidebar-widget {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .home-page {
+        padding-top: var(--spacing-md);
+    }
+
+    .hero-section {
+        padding: 40px 0 50px;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .feed-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .feed-controls {
+        width: 100%;
+    }
+
+    .filter-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+    }
+}

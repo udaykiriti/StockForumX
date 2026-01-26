@@ -1,0 +1,7 @@
+.ask-question-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 8px 12px;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}

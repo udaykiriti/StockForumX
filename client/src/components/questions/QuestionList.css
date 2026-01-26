@@ -1,0 +1,273 @@
+.question-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.no-questions {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.no-questions h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.no-questions p {
+    color: var(--text-muted);
+}
+
+/* Question Card - Stack Overflow Style */
+/* Question Card - Modern & Clean */
+.question-card {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    /* Slightly more rounded */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.question-card:hover {
+    border-color: rgba(244, 128, 36, 0.5);
+    /* Primary orange with transparency */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* Softer, deeper shadow */
+    transform: translateY(-1px);
+}
+
+/* Stats Column (Refined) */
+.question-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 90px;
+    margin-right: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #6a737c;
+    width: 100%;
+    padding: 4px 0;
+    border-radius: 4px;
+}
+
+.stat-number {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    color: #0c0d0e;
+}
+
+/* Specific Stat Highlights */
+.stat-box.votes .stat-number {
+    font-weight: 600;
+    color: #0c0d0e;
+}
+
+.stat-box.accepted {
+    background-color: #2f6f44;
+    /* Solid Green for accepted answer */
+    color: white;
+    /* White text for contrast */
+    border: 1px solid #2f6f44;
+}
+
+.stat-box.accepted .stat-number,
+.stat-box.accepted .stat-label {
+    color: white;
+}
+
+/* If it has answers but not accepted, give it a border */
+.stat-box.has-answers {
+    border: 1px solid #2f6f44;
+    color: #2f6f44;
+}
+
+.stat-box.has-answers .stat-number {
+    color: #2f6f44;
+}
+
+/* Question Content */
+.question-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.question-title {
+    margin: -2px 0 8px 0;
+    /* Adjust for line-height alignment */
+    font-size: 1.15rem;
+    /* Slightly larger */
+    font-weight: 500;
+    /* Regular weight, not too bold */
+    line-height: 1.35;
+}
+
+.question-title a {
+    color: #0074cc;
+    text-decoration: none;
+}
+
+.question-title a:hover {
+    color: #0a95ff;
+}
+
+.question-excerpt {
+    color: #3b4045;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Tags - Modern Pills */
+.question-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #e1ecf4;
+    color: #39739d;
+    border-radius: 3px;
+    font-size: 12px;
+    border: none;
+    transition: background-color 0.15s ease;
+}
+
+.tag:hover {
+    background-color: #d0e3f1;
+    color: #2c5777;
+}
+
+/* Question Footer */
+.question-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 12px;
+    margin-top: auto;
+    gap: 12px;
+    /* Consistent gap */
+}
+
+.question-author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.author-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #0074cc;
+    text-decoration: none;
+}
+
+.author-name {
+    color: #0074cc;
+    font-weight: 400;
+}
+
+.author-link:hover .author-name {
+    color: #0a95ff;
+}
+
+.author-reputation {
+    font-weight: 700;
+    color: #525960;
+    background: transparent;
+    padding: 0;
+    font-size: 12px;
+}
+
+.question-time {
+    color: #6a737c;
+    display: flex;
+    align-items: center;
+}
+
+.question-time::before {
+    content: 'asked';
+    margin-right: 4px;
+    color: #6a737c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .question-card {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    /* Compact Stats Row */
+    .question-stats {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        margin-right: 0;
+        gap: 12px;
+        margin-bottom: 4px;
+    }
+
+    .stat-box {
+        width: auto;
+        flex-direction: row;
+        gap: 4px;
+        font-size: 12px;
+    }
+
+    /* Hide labels on very small screens to save space, or keep concise */
+    .stat-label {
+        margin-top: 0;
+    }
+
+    .question-title {
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }
+
+    .question-excerpt {
+        font-size: 12px;
+        margin-bottom: 8px;
+        -webkit-line-clamp: 3;
+    }
+
+    .question-footer {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-start;
+    }
+
+    .question-author {
+        margin-left: auto;
+        /* Push author to right if space permits, or wraps */
+    }
+}

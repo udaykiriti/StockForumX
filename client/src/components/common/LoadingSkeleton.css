@@ -1,0 +1,181 @@
+/* Loading Skeleton Styles */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.skeleton-list,
+.skeleton-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* Base skeleton elements */
+.skeleton-line,
+.skeleton-circle,
+.skeleton-stat-box,
+.skeleton-tag,
+.skeleton-stat {
+    background: linear-gradient(90deg,
+            #f0f0f0 0%,
+            #e0e0e0 50%,
+            #f0f0f0 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.skeleton-line {
+    height: 16px;
+    margin-bottom: 8px;
+}
+
+.skeleton-title {
+    height: 24px;
+    width: 70%;
+}
+
+.skeleton-text {
+    width: 100%;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+/* Question Skeleton */
+.skeleton-question {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.skeleton-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 80px;
+}
+
+.skeleton-stat-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+}
+
+.skeleton-content {
+    flex: 1;
+}
+
+.skeleton-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.skeleton-tag {
+    width: 60px;
+    height: 24px;
+    border-radius: 12px;
+}
+
+/* Stock Card Skeleton */
+.skeleton-stock-card {
+    padding: 20px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.skeleton-stock-symbol {
+    width: 80px;
+    height: 28px;
+    margin-bottom: 8px;
+}
+
+.skeleton-stock-name {
+    width: 60%;
+    margin-bottom: 16px;
+}
+
+.skeleton-stock-price {
+    width: 100px;
+    height: 32px;
+    margin-bottom: 16px;
+}
+
+.skeleton-stats-row {
+    display: flex;
+    gap: 12px;
+}
+
+.skeleton-stat {
+    flex: 1;
+    height: 40px;
+}
+
+/* User Row Skeleton */
+.skeleton-user-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+.skeleton-username {
+    width: 150px;
+    flex: 1;
+}
+
+.skeleton-tier {
+    width: 100px;
+}
+
+.skeleton-reputation {
+    width: 80px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+
+    .skeleton-line,
+    .skeleton-circle,
+    .skeleton-stat-box,
+    .skeleton-tag,
+    .skeleton-stat {
+        background: linear-gradient(90deg,
+                #2d3748 0%,
+                #4a5568 50%,
+                #2d3748 100%);
+    }
+
+    .skeleton-question,
+    .skeleton-stock-card,
+    .skeleton-user-row {
+        background: #1a202c;
+        border-color: #2d3748;
+    }
+}

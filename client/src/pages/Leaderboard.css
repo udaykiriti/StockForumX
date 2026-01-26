@@ -1,0 +1,148 @@
+/* Stack Overflow Style Leaderboard */
+.leaderboard-page {
+    padding: var(--spacing-2xl) 0;
+}
+
+.page-header {
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.page-header h1 {
+    font-size: 2.1rem;
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+.page-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Leaderboard Grid/Table */
+.leaderboard-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px 120px 100px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 100px 120px 100px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--transition-fast);
+}
+
+.table-row:hover {
+    background-color: #f8f9f9;
+}
+
+/* Columns */
+.col-rank {
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.col-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-small {
+    width: 32px;
+    height: 32px;
+    background-color: #e1ecf4;
+    color: #39739d;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.username {
+    color: var(--color-info);
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.col-tier {
+    font-size: 12px;
+}
+
+.tier-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    font-size: 11px;
+}
+
+.col-reputation {
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.col-stats {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* Rank Styling */
+.rank-1,
+.rank-2,
+.rank-3 {
+    font-size: 16px;
+}
+
+.rank-1 .rank-badge {
+    color: #f48024;
+    /* Gold-ish orange */
+}
+
+.rank-2 .rank-badge {
+    color: #9fa6ad;
+    /* Silver */
+}
+
+.rank-3 .rank-badge {
+    color: #ab825f;
+    /* Bronze */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 50px 1fr 80px;
+    }
+
+    .col-tier,
+    .col-stats {
+        display: none;
+    }
+}

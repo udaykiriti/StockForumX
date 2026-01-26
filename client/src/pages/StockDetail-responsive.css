@@ -1,0 +1,69 @@
+/* Responsive */
+@media (max-width: 968px) {
+    .stock-content {
+        grid-template-columns: 1fr;
+    }
+
+    .stock-sidebar {
+        position: static;
+        order: 2;
+    }
+
+    .stock-main {
+        order: 1;
+    }
+
+    .stock-header-content {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .stock-price-info {
+        text-align: left;
+    }
+
+    .stock-stats-bar {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+}
+
+@media (max-width: 640px) {
+    .stock-symbol {
+        font-size: var(--font-size-3xl);
+    }
+
+    .current-price {
+        font-size: var(--font-size-2xl);
+    }
+
+    .stock-stats-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .tabs {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .tab {
+        width: 100%;
+        text-align: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .tabs-container {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+
+    .stock-header-section {
+        padding: var(--spacing-md) 0;
+    }
+
+    .ask-question-btn {
+        width: 100%;
+    }
+}

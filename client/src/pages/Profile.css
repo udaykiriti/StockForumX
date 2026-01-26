@@ -1,0 +1,380 @@
+/* Profile Page Layout */
+.profile-page {
+    padding: var(--spacing-xl) 0;
+    min-height: calc(100vh - 60px);
+    background: #f8f9f9;
+}
+
+/* Header Section */
+.profile-header {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profile-avatar {
+    width: 128px;
+    height: 128px;
+    background: linear-gradient(135deg, #f48024 0%, #ff9a56 100%);
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+/* Profile Info Section */
+.profile-info {
+    flex: 1;
+    min-width: 0;
+    /* Prevents overflow */
+}
+
+.profile-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-edit-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    padding: 8px 16px;
+    white-space: nowrap;
+}
+
+.profile-name-row h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.user-status {
+    margin: 4px 0 0 0;
+    font-size: 15px;
+    color: var(--text-secondary);
+    font-style: normal;
+}
+
+.user-bio {
+    margin: 16px 0;
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    max-width: 800px;
+}
+
+/* Badges & Stats */
+.profile-stats-badges {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.stat-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.reputation-badge {
+    background: #fdf7e2;
+    color: #bfa319;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    border: 1px solid #f1e5bc;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Key Stats Grid */
+.stats-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card-profile {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card-profile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card-profile .label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.stat-card-profile .value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.stat-card-profile .sub-value {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Content Layout (Tabs + List) */
+.content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-tabs {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1px;
+}
+
+.profile-tab {
+    padding: 12px 4px;
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 500;
+    margin-bottom: -2px;
+    /* Pull down to overlap border */
+}
+
+.profile-tab:hover {
+    color: var(--text-primary);
+}
+
+.profile-tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--color-primary);
+    font-weight: 700;
+}
+
+/* Predictions List */
+.predictions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.prediction-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+}
+
+.prediction-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.stock-symbol {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-primary);
+}
+
+.prediction-type {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.prediction-type.bullish {
+    background: #d4edda;
+    color: #155724;
+}
+
+.prediction-type.bearish {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.prediction-type.neutral {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.prediction-details {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.prediction-price {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.prediction-reasoning {
+    color: var(--text-primary);
+    font-size: 15px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.prediction-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.prediction-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.prediction-status.pending {
+    background: #e7f3ff;
+    color: #0056b3;
+}
+
+.prediction-status.correct {
+    background: #d4edda;
+    color: #155724;
+}
+
+.prediction-status.incorrect {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Questions List */
+.questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.question-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    /* Just in case */
+}
+
+.question-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-color: var(--color-primary-light);
+}
+
+.question-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.question-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.question-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-name-row {
+        justify-content: center;
+    }
+
+    .profile-stats-badges {
+        justify-content: center;
+    }
+
+    .prediction-details {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
