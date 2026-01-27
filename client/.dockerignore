@@ -4,4 +4,4 @@ npm-debug.log
 .gitignore
 Dockerfile
 dist
-nginx.conf
+
