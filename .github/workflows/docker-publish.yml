@@ -38,8 +38,8 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ${{ id.meta-backend.outputs.tags }}
-          labels: ${{ id.meta-backend.outputs.labels }}
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
 
       - name: Extract metadata (tags, labels) for Frontend
         id: meta-frontend
@@ -52,5 +52,5 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: ${{ id.meta-frontend.outputs.tags }}
-          labels: ${{ id.meta-frontend.outputs.labels }}
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
