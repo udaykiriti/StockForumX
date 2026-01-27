@@ -15,6 +15,7 @@ import stockRoutes from './routes/stocks.js';
 import questionRoutes from './routes/questions.js';
 import predictionRoutes from './routes/predictions.js';
 import userRoutes from './routes/users.js';
+import portfolioRoutes from './routes/portfolio.js';
 
 // Sockets
 import { setupChatHandlers } from './sockets/chat.js';
@@ -69,6 +70,7 @@ app.use('/api/stocks', stockRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/predictions', predictionRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/portfolio', portfolioRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

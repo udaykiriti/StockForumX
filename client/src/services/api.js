@@ -5,6 +5,7 @@ const API_BASE = '/api';
 // Stocks
 export const getStocks = (params) => axios.get(`${API_BASE}/stocks`, { params });
 export const getStock = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}`);
+export const getStockHistory = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}/history`);
 export const getTrendingQuestions = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}/trending`);
 
 // Questions
@@ -29,6 +30,15 @@ export const getLeaderboard = (limit) => axios.get(`${API_BASE}/users/leaderboar
 export const getUserProfile = (userId) => axios.get(`${API_BASE}/users/${userId}`);
 export const getUserStats = (userId) => axios.get(`${API_BASE}/users/${userId}/stats`);
 export const updateProfile = (data) => axios.put(`${API_BASE}/users/profile`, data);
+export const getUserCount = () => axios.get(`${API_BASE}/users/count`);
+export const followUser = (id) => axios.post(`${API_BASE}/users/${id}/follow`);
+
+// Portfolio & Trading
+export const getPortfolio = () => axios.get(`${API_BASE}/portfolio`);
+export const executeTrade = (tradeData) => axios.post(`${API_BASE}/portfolio/trade`, tradeData);
+export const getTradeHistory = () => axios.get(`${API_BASE}/portfolio/history`);
+export const getWatchlist = () => axios.get(`${API_BASE}/portfolio/watchlist`);
+export const toggleWatchlist = (stockId) => axios.post(`${API_BASE}/portfolio/watchlist/${stockId}`);
 
 // Auth
 // Auth

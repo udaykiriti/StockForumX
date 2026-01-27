@@ -81,7 +81,23 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
+    },
+    balance: {
+        type: Number,
+        default: 10000 // Starting with $10k
+    },
+    watchlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Stock'
+    }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, {
     timestamps: true
 });
