@@ -72,6 +72,15 @@ app.use('/api/predictions', predictionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err);
+    res.status(500).json({
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'StockForumX API is running' });

@@ -18,8 +18,12 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         const newSocket = io('http://localhost:5000', {
-            transports: ['websocket'],
-            autoConnect: true
+            transports: ['websocket', 'polling'], // Enable polling fallback
+            withCredentials: true,
+            autoConnect: true,
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
         });
 
         newSocket.on('notification', (notif) => {
