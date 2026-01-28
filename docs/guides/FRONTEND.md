@@ -451,11 +451,13 @@ const handleClick = useCallback(() => {
 
 ## Performance Tips
 
-1. **Code Splitting**: Use `React.lazy()` for route-based splitting
+1. **Code Splitting**: Use `React.lazy()` for route-based splitting.
+   - **Implementation**: Routes in `App.jsx` are lazy-loaded and wrapped in `<Suspense fallback={<Loader />}>` to fast-load the initial bundle.
 2. **Virtualization**: Use `react-window` for long lists
 3. **Debouncing**: Debounce search inputs
 4. **Image Optimization**: Lazy load images
-5. **Memoization**: Use `React.memo`, `useMemo`, `useCallback`
+5. **Memoization**: Use `React.memo`, `useMemo`, `useCallback`.
+   - **Example**: `Home.jsx` memoizes tag calculation to prevent re-filtering on every render.
 
 ## Testing
 
