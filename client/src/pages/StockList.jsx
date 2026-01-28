@@ -8,22 +8,13 @@ import { FaChartLine } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 import './StockList.css';
 
-import { FixedSizeGrid as Grid } from 'react-window';
-// Actually, let's try the direct default access pattern which usually fixes "default is not exported"
-// import * as AutoSizerPkg from 'react-virtualized-auto-sizer';
-// const AutoSizer = AutoSizerPkg.default || AutoSizerPkg;
-
-// The error "default is not exported" usually means it IS exported as MJS but with named exports, OR it is CJS and Vite is confused.
-// Looking at the package, it often only has a default export. 
-// A very common fix for this specific package in recent Vite versions:
-// import { default as AutoSizer } from 'react-virtualized-auto-sizer'; 
-// But if that fails, the fallback is:
-// import AutoSizerPkg from 'react-virtualized-auto-sizer';
-// const AutoSizer = AutoSizerPkg.default || AutoSizerPkg;
-
-// Let's implement the robust fallback:
+import * as ReactWindow from 'react-window';
 import * as AutoSizerPkg from 'react-virtualized-auto-sizer';
-const AutoSizer = AutoSizerPkg.default || AutoSizerPkg;
+
+// Workaround for CJS/ESM interop issues in Vite/Rollup build
+// Using bracket notation to bypass static analysis "is not exported" errors
+const Grid = ReactWindow.FixedSizeGrid || ReactWindow['FixedSizeGrid'] || ReactWindow.default?.['FixedSizeGrid'];
+const AutoSizer = AutoSizerPkg.default || AutoSizerPkg['default'] || AutoSizerPkg;
 
 // ... existing imports ...
 
