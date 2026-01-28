@@ -8,17 +8,23 @@ import { FaChartLine } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 import './StockList.css';
 
+import { FixedSizeGrid as Grid } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+
+// ... existing imports ...
+
 const StockList = () => {
+    // ... existing state ...
     const [stocks, setStocks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
+    // ... existing useEffects/fetches ...
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             fetchStocks();
-        }, 300); // Debounce search
-
+        }, 300);
         return () => clearTimeout(timeoutId);
     }, [searchQuery]);
 
@@ -40,6 +46,60 @@ const StockList = () => {
 
     const sectors = ['all', ...new Set(stocks.map(s => s.sector).filter(Boolean))];
 
+    // Grid Cell Renderer
+    const Cell = ({ columnIndex, rowIndex, style, data }) => {
+        const { stocks, columnCount } = data;
+        const index = rowIndex * columnCount + columnIndex;
+
+        if (index >= stocks.length) return null;
+
+        const stock = stocks[index];
+
+        // Adjust style for gap simulation (react-window uses absolute positioning)
+        const gap = 40;
+        const adjustedStyle = {
+            ...style,
+            left: style.left + (gap / 2),
+            top: style.top + (gap / 2),
+            width: style.width - gap,
+            height: style.height - gap
+        };
+
+        return (
+            <div style={adjustedStyle}>
+                <Link to={`/stock/${stock.symbol}`} className="stock-card" style={{ height: '100%', margin: 0 }}>
+                    <div className="stock-header">
+                        <div>
+                            <h3 className="stock-symbol">{stock.symbol || 'N/A'}</h3>
+                            <p className="stock-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {stock.name || 'Unknown'}
+                            </p>
+                        </div>
+                        <span className="badge badge-info">{stock.sector || 'Other'}</span>
+                    </div>
+
+                    <div className="stock-price">
+                        <span className="price">${(stock.currentPrice || 0).toFixed(2)}</span>
+                        <span className={`change ${(stock.change || 0) >= 0 ? 'positive' : 'negative'}`}>
+                            {(stock.change || 0) >= 0 ? '+' : ''}{Math.abs(stock.changePercent || 0)}%
+                        </span>
+                    </div>
+
+                    <div className="stock-stats">
+                        <div className="stat">
+                            <span className="stat-label">Volume</span>
+                            <span className="stat-value">{((stock.volume || 0) / 1000000).toFixed(1)}M</span>
+                        </div>
+                        <div className="stat">
+                            <span className="stat-label">Mkt Cap</span>
+                            <span className="stat-value">${((stock.marketCap || 0) / 1000000000).toFixed(1)}B</span>
+                        </div>
+                    </div>
+                </Link>
+            </div>
+        );
+    };
+
     if (loading) {
         return (
             <div className="stock-list-page">
@@ -52,76 +112,68 @@ const StockList = () => {
 
     return (
         <div className="stock-list-page fade-in">
-            <div className="container">
+            <div className="container" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 100px)' }}>
                 <div className="page-header">
                     <h1>Stocks</h1>
                     <p>Browse stocks by sector and market performance</p>
                 </div>
 
-                {/* Search Bar */}
-                <SearchBar
-                    value={searchQuery}
-                    onChange={setSearchQuery}
-                    placeholder="Search stocks by symbol or name..."
-                />
+                <div style={{ marginBottom: '20px' }}>
+                    <SearchBar
+                        value={searchQuery}
+                        onChange={setSearchQuery}
+                        placeholder="Search stocks by symbol or name..."
+                    />
 
-                <div className="filter-section">
-                    <div className="filter-buttons">
-                        {sectors.map(sector => (
-                            <button
-                                key={sector}
-                                className={`filter-btn ${filter === sector ? 'active' : ''}`}
-                                onClick={() => setFilter(sector)}
-                            >
-                                {sector}
-                            </button>
-                        ))}
+                    <div className="filter-section" style={{ marginTop: '20px', marginBottom: '0' }}>
+                        <div className="filter-buttons">
+                            {sectors.map(sector => (
+                                <button
+                                    key={sector}
+                                    className={`filter-btn ${filter === sector ? 'active' : ''}`}
+                                    onClick={() => setFilter(sector)}
+                                >
+                                    {sector}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className="stocks-grid">
-
+                <div className="stocks-grid-container" style={{ flex: 1, minHeight: 0 }}>
                     {filteredStocks.length > 0 ? (
-                        filteredStocks.map(stock => (
-                            <Link to={`/stock/${stock.symbol}`} key={stock._id} className="stock-card">
-                                <div className="stock-header">
-                                    <div>
-                                        <h3 className="stock-symbol">{stock.symbol || 'N/A'}</h3>
-                                        <p className="stock-name">{stock.name || 'Unknown'}</p>
-                                    </div>
-                                    <span className="badge badge-info">{stock.sector || 'Other'}</span>
-                                </div>
+                        <AutoSizer>
+                            {({ height, width }) => {
+                                // Responsive column calculation
+                                const minColumnWidth = 320;
+                                const columnCount = Math.max(1, Math.floor(width / minColumnWidth));
+                                const columnWidth = width / columnCount;
+                                const rowCount = Math.ceil(filteredStocks.length / columnCount);
+                                const rowHeight = 380; // Approximate card height + gap
 
-                                <div className="stock-price">
-                                    <span className="price">${(stock.currentPrice || 0).toFixed(2)}</span>
-                                    <span className={`change ${(stock.change || 0) >= 0 ? 'positive' : 'negative'}`}>
-                                        {(stock.change || 0) >= 0 ? '+' : ''}{Math.abs(stock.changePercent || 0)}%
-                                    </span>
-                                </div>
-
-                                <div className="stock-stats">
-                                    <div className="stat">
-                                        <span className="stat-label">Volume</span>
-                                        <span className="stat-value">{((stock.volume || 0) / 1000000).toFixed(1)}M</span>
-                                    </div>
-                                    <div className="stat">
-                                        <span className="stat-label">Market Cap</span>
-                                        <span className="stat-value">${((stock.marketCap || 0) / 1000000000).toFixed(1)}B</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
+                                return (
+                                    <Grid
+                                        columnCount={columnCount}
+                                        columnWidth={columnWidth}
+                                        height={height}
+                                        rowCount={rowCount}
+                                        rowHeight={rowHeight}
+                                        width={width}
+                                        itemData={{ stocks: filteredStocks, columnCount }}
+                                    >
+                                        {Cell}
+                                    </Grid>
+                                );
+                            }}
+                        </AutoSizer>
                     ) : (
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <EmptyState
-                                title="STOCKS NOT FOUND"
-                                message={`We couldn't find any stocks matching "${searchQuery}"`}
-                                action="Reset Search"
-                                onAction={() => setSearchQuery('')}
-                            />
-                        </div>
+                        <EmptyState
+                            title="STOCKS NOT FOUND"
+                            message={`We couldn't find any stocks matching "${searchQuery}"`}
+                            action="Reset Search"
+                            onAction={() => setSearchQuery('')}
+                        />
                     )}
-
                 </div>
             </div>
         </div>
