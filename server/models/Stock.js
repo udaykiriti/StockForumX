@@ -89,6 +89,9 @@ stockSchema.pre('save', function (next) {
     next();
 });
 
+// Indexes
+stockSchema.index({ symbol: 'text', name: 'text' });
+
 const Stock = mongoose.model('Stock', stockSchema);
 
 export default Stock;

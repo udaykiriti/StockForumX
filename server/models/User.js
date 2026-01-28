@@ -128,6 +128,9 @@ userSchema.virtual('accuracy').get(function () {
 userSchema.set('toJSON', { virtuals: true });
 userSchema.set('toObject', { virtuals: true });
 
+// Indexes
+userSchema.index({ reputation: -1 });
+
 const User = mongoose.model('User', userSchema);
 
 export default User;
