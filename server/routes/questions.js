@@ -11,58 +11,117 @@ const router = express.Router();
 // @route   GET /api/questions
 // @desc    Get questions with filters
 // @access  Public
+// @route   GET /api/questions
+// @desc    Get questions with filters (Optimized with Aggregation)
+// @access  Public
 router.get('/', async (req, res) => {
     try {
         const { userId, stockId, stockSymbol, tag, sort = 'recent', search } = req.query;
-        const query = {};
 
-        console.log('Questions API called with:', { userId, stockId, stockSymbol, tag, sort, search }); // Debug
+        console.log('Questions API called with:', { userId, stockId, stockSymbol, tag, sort, search });
+
+        // Build Match Stage
+        const matchStage = {};
 
         // Filter by user
         if (userId) {
-            query.userId = userId;
+            matchStage.userId = new mongoose.Types.ObjectId(userId);
         }
 
         // Filter by stock
         if (stockId) {
-            query.stockId = stockId;
+            matchStage.stockId = new mongoose.Types.ObjectId(stockId);
         } else if (stockSymbol) {
             const stock = await Stock.findOne({ symbol: stockSymbol.toUpperCase() });
-            if (stock) query.stockId = stock._id;
+            if (stock) matchStage.stockId = stock._id;
+            else if (!userId && !tag && !search) return res.json([]); // Return empty if filtering by non-existent stock
         }
 
         // Filter by tag
         if (tag) {
-            query.tags = tag;
+            matchStage.tags = tag;
         }
 
         // Text search
         if (search) {
-            query.$or = [
+            matchStage.$or = [
                 { title: { $regex: search, $options: 'i' } },
                 { content: { $regex: search, $options: 'i' } }
             ];
         }
 
-        console.log('MongoDB Query:', JSON.stringify(query)); // Debug
+        // Build Sort Stage
+        let sortStage = { createdAt: -1 }; // Default: recent
+        if (sort === 'popular') sortStage = { views: -1, upvotes: -1 };
 
-        // Sorting
-        let sortOption = { createdAt: -1 }; // Default: recent
-        if (sort === 'popular') sortOption = { views: -1, upvotes: -1 };
-        if (sort === 'unanswered') query.answerCount = 0;
+        // Handle "unanswered" filter
+        if (sort === 'unanswered') matchStage.answerCount = 0;
 
-        const questions = await Question.find(query)
-            .populate('userId', 'username reputation')
-            .populate('stockId', 'symbol name')
-            .sort(sortOption)
-            .limit(50);
+        console.log('Aggregation Match:', JSON.stringify(matchStage));
 
-        console.log('Questions found:', questions.length); // Debug
+        const questions = await Question.aggregate([
+            // 1. Filter first (Index utilization)
+            { $match: matchStage },
+
+            // 2. Sort early if possible (limited by index usage, but good for reducing set before lookup)
+            { $sort: sortStage },
+            { $limit: 50 },
+
+            // 3. Join with Users
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user'
+                }
+            },
+            { $unwind: '$user' }, // User is required
+
+            // 4. Join with Stocks
+            {
+                $lookup: {
+                    from: 'stocks',
+                    localField: 'stockId',
+                    foreignField: '_id',
+                    as: 'stock'
+                }
+            },
+            { $unwind: '$stock' }, // Stock is required
+
+            // 5. Project (Shape Output)
+            {
+                $project: {
+                    title: 1,
+                    content: 1,
+                    tags: 1,
+                    upvotes: 1,
+                    upvotedBy: 1,
+                    views: 1,
+                    answerCount: 1,
+                    hasAcceptedAnswer: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    userId: {
+                        _id: '$user._id',
+                        username: '$user.username',
+                        reputation: '$user.reputation',
+                        avatar: '$user.avatar'
+                    },
+                    stockId: {
+                        _id: '$stock._id',
+                        symbol: '$stock.symbol',
+                        name: '$stock.name'
+                    }
+                }
+            }
+        ]);
+
+        console.log('Questions found:', questions.length);
 
         res.json(questions);
     } catch (error) {
         console.error('Questions API error:', error);
-        // Fallback removed
         res.status(500).json({ message: 'Error fetching questions' });
     }
 });
