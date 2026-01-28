@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import './StockList.css';
 
 import { FixedSizeGrid as Grid } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer'; // Rollup seems to catch this, but let's try a safer import if this fails, or maybe just suppression. 
 // Actually, let's try the direct default access pattern which usually fixes "default is not exported"
 // import * as AutoSizerPkg from 'react-virtualized-auto-sizer';
 // const AutoSizer = AutoSizerPkg.default || AutoSizerPkg;
