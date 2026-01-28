@@ -15,5 +15,10 @@ export default defineConfig({
                 ws: true
             }
         }
+    },
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        }
     }
 })

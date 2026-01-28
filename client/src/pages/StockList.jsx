@@ -8,13 +8,8 @@ import { FaChartLine } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 import './StockList.css';
 
-import * as ReactWindow from 'react-window';
-import * as AutoSizerPkg from 'react-virtualized-auto-sizer';
-
-// Workaround for CJS/ESM interop issues in Vite/Rollup build
-// Using bracket notation to bypass static analysis "is not exported" errors
-const Grid = ReactWindow.FixedSizeGrid || ReactWindow['FixedSizeGrid'] || ReactWindow.default?.['FixedSizeGrid'];
-const AutoSizer = AutoSizerPkg.default || AutoSizerPkg['default'] || AutoSizerPkg;
+import { FixedSizeGrid as Grid } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 // ... existing imports ...
 
