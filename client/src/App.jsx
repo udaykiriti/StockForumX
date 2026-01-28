@@ -1,22 +1,26 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { Suspense, lazy } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
 import Navbar from './components/common/Navbar';
-import Home from './pages/Home';
-import StockList from './pages/StockList';
-import StockDetail from './pages/StockDetail';
-import QuestionDetail from './pages/QuestionDetail';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Leaderboard from './pages/Leaderboard';
-import VerifyEmail from './pages/VerifyEmail';
-import LoginOTP from './pages/LoginOTP';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import NotFound from './pages/error/NotFound';
-import Portfolio from './pages/Portfolio';
+import Loader from './components/common/Loader';
+
+// Lazy loading pages
+const Home = lazy(() => import('./pages/Home'));
+const StockList = lazy(() => import('./pages/StockList'));
+const StockDetail = lazy(() => import('./pages/StockDetail'));
+const QuestionDetail = lazy(() => import('./pages/QuestionDetail'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
+const LoginOTP = lazy(() => import('./pages/LoginOTP'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const NotFound = lazy(() => import('./pages/error/NotFound'));
+const Portfolio = lazy(() => import('./pages/Portfolio'));
 
 function App() {
     return (
@@ -26,22 +30,24 @@ function App() {
                     <div className="app">
                         <Navbar />
                         <main>
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route path="/stocks" element={<StockList />} />
-                                <Route path="/stock/:symbol" element={<StockDetail />} />
-                                <Route path="/question/:id" element={<QuestionDetail />} />
-                                <Route path="/login" element={<Login />} />
-                                <Route path="/register" element={<Register />} />
-                                <Route path="/profile/:id" element={<Profile />} />
-                                <Route path="/leaderboard" element={<Leaderboard />} />
-                                <Route path="/verify-email" element={<VerifyEmail />} />
-                                <Route path="/login-otp" element={<LoginOTP />} />
-                                <Route path="/forgot-password" element={<ForgotPassword />} />
-                                <Route path="/reset-password" element={<ResetPassword />} />
-                                <Route path="/portfolio" element={<Portfolio />} />
-                                <Route path="*" element={<NotFound />} />
-                            </Routes>
+                            <Suspense fallback={<Loader />}>
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/stocks" element={<StockList />} />
+                                    <Route path="/stock/:symbol" element={<StockDetail />} />
+                                    <Route path="/question/:id" element={<QuestionDetail />} />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/register" element={<Register />} />
+                                    <Route path="/profile/:id" element={<Profile />} />
+                                    <Route path="/leaderboard" element={<Leaderboard />} />
+                                    <Route path="/verify-email" element={<VerifyEmail />} />
+                                    <Route path="/login-otp" element={<LoginOTP />} />
+                                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                                    <Route path="/reset-password" element={<ResetPassword />} />
+                                    <Route path="/portfolio" element={<Portfolio />} />
+                                    <Route path="*" element={<NotFound />} />
+                                </Routes>
+                            </Suspense>
                         </main>
                         <Toaster
                             position="top-right"
