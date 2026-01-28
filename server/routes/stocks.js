@@ -7,6 +7,13 @@ import yahooFinance from 'yahoo-finance2';
 
 const router = express.Router();
 
+// Simple in-memory cache
+let stocksCache = {
+    data: null,
+    lastUpdated: 0,
+    ttl: 60 * 1000 // 60 seconds
+};
+
 // Mock Data
 // @route   GET /api/stocks
 // @desc    Get all stocks
@@ -14,6 +21,12 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const { search } = req.query;
+
+        // Return cached data if available and fresh (only for full list)
+        if (!search && stocksCache.data && (Date.now() - stocksCache.lastUpdated < stocksCache.ttl)) {
+            return res.json(stocksCache.data);
+        }
+
         let query = {};
 
         // 1. Local DB Search
@@ -115,6 +128,15 @@ router.get('/', async (req, res) => {
         // Sort: Exact matches first, then DB results, then Yahoo results
         // Simple sort by symbol for now
         combinedStocks.sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+        // Update cache if this was a full list fetch
+        if (!search) {
+            stocksCache = {
+                data: combinedStocks,
+                lastUpdated: Date.now(),
+                ttl: 60 * 1000
+            };
+        }
 
         res.json(combinedStocks);
     } catch (error) {
