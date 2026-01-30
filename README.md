@@ -8,9 +8,12 @@
   <img src="https://img.shields.io/github/stars/udaykiriti/StockForumX?style=for-the-badge" />
   <img src="https://img.shields.io/github/issues/udaykiriti/StockForumX?style=for-the-badge" />
 </p>
-
 <p align="center">
   <strong>A real-time stock discussion and prediction platform</strong><br/>
+  Accuracy-based reputation · Time-expiring knowledge · Live analytics
+</p>
+
+---
 ## Features
 
 - **Real-time Chat** - Live discussions per stock using WebSockets
