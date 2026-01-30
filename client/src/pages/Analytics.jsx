@@ -12,7 +12,7 @@ import {
     Pie,
     Cell
 } from 'recharts';
-import api from '../services/api';
+import { getPredictionStats, getLeaderboard } from '../services/api';
 import './Analytics.css';
 
 const Analytics = () => {
@@ -24,8 +24,8 @@ const Analytics = () => {
         const fetchAnalytics = async () => {
             try {
                 const [statsRes, leaderboardRes] = await Promise.all([
-                    api.get('/predictions/stats'),
-                    api.get('/users/leaderboard?limit=10')
+                    getPredictionStats(),
+                    getLeaderboard(10)
                 ]);
                 setGlobalStats(statsRes.data);
                 setLeaderboard(leaderboardRes.data);
