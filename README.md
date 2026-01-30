@@ -1,9 +1,18 @@
 # StockForumX 
 
-![CI](https://github.com/udaykiriti/StockForumX/actions/workflows/ci.yml/badge.svg)
-![Docker Publish](https://github.com/udaykiriti/StockForumX/actions/workflows/docker-publish.yml/badge.svg)
 
-A real-time stock discussion and prediction platform with accuracy-based reputation, time-expiring knowledge, and live analytics.
+<p align="center">
+  <img src="https://img.shields.io/github/actions/workflow/status/udaykiriti/StockForumX/ci.yml?label=CI&style=for-the-badge" />
+  <img src="https://img.shields.io/github/actions/workflow/status/udaykiriti/StockForumX/docker-publish.yml?label=Docker&style=for-the-badge" />
+  <img src="https://img.shields.io/github/license/udaykiriti/StockForumX?style=for-the-badge" />
+  <img src="https://img.shields.io/github/stars/udaykiriti/StockForumX?style=for-the-badge" />
+  <img src="https://img.shields.io/github/issues/udaykiriti/StockForumX?style=for-the-badge" />
+</p>
+
+<p align="center">
+  <strong>A real-time stock discussion and prediction platform</strong><br/>
+  Accuracy-based reputation · Time-expiring knowledge · Live analytics
+</p>-time stock discussion and prediction platform with accuracy-based reputation, time-expiring knowledge, and live analytics.
 
 ## Features
 
