@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
             ];
         }
 
-        const localStocks = await Stock.find(query).sort({ symbol: 1 });
+        const localStocks = await Stock.find(query).sort({ symbol: 1 }).lean();
 
         // Auto-seed if empty and no search
         if (!search && localStocks.length === 0) {
@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
                                     }
                                 },
                                 { upsert: true, new: true, setDefaultsOnInsert: true }
-                            );
+                            ).lean();
                         } catch (e) {
                             console.error(`Failed to seed ${symbol}:`, e.message);
                             return null;
@@ -114,7 +114,7 @@ router.get('/', async (req, res) => {
         // 3. Merge Results
         // Create a map of existing symbols to avoid duplicates
         const stockMap = new Map();
-        localStocks.forEach(s => stockMap.set(s.symbol, s.toObject()));
+        localStocks.forEach(s => stockMap.set(s.symbol, s));
 
         yahooResults.forEach(y => {
             if (!stockMap.has(y.symbol)) {
