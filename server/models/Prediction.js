@@ -51,6 +51,13 @@ const predictionSchema = new mongoose.Schema({
     reasoning: {
         type: String,
         maxlength: 1000
+    },
+    isFlagged: {
+        type: Boolean,
+        default: false
+    },
+    flagReason: {
+        type: String
     }
 }, {
     timestamps: true

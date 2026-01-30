@@ -47,6 +47,32 @@ router.post('/', protect, async (req, res) => {
     try {
         const { stockId, predictionType, targetPrice, direction, timeframe, reasoning } = req.body;
 
+        // 1. Prevent Duplicate Active Predictions
+        const existingActivePrediction = await Prediction.findOne({
+            userId: req.user._id,
+            stockId,
+            isEvaluated: false
+        });
+
+        if (existingActivePrediction) {
+            return res.status(400).json({ message: 'You already have an active prediction for this stock' });
+        }
+
+        // 2. Pump Detection (More than 10 predictions for same stock in last minute)
+        const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+        const recentStockPredictions = await Prediction.countDocuments({
+            stockId,
+            createdAt: { $gte: oneMinuteAgo }
+        });
+
+        let isFlagged = false;
+        let flagReason = '';
+
+        if (recentStockPredictions >= 10) {
+            isFlagged = true;
+            flagReason = 'Potential Pump Activity: High frequency predictions';
+        }
+
         // Rate limiting check
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
         const recentPredictions = await Prediction.countDocuments({
@@ -83,7 +109,9 @@ router.post('/', protect, async (req, res) => {
             timeframe,
             targetDate,
             initialPrice: stock.currentPrice,
-            reasoning
+            reasoning,
+            isFlagged,
+            flagReason
         });
 
         const populatedPrediction = await Prediction.findById(prediction._id)
