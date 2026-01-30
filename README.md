@@ -169,10 +169,10 @@ cd client && npm test
 - [x] Authentication system
 - [x] User Profiles
 - [x] Stock listing
-- [ ] Q&A system
-- [ ] Prediction system
-- [ ] Reputation algorithm
-- [ ] Real-time chat
+- [x] Q&A system
+- [x] Prediction system
+- [x] Reputation algorithm
+- [x] Real-time chat
 - [ ] Analytics dashboard
 - [x] Performance Optimizations (Lazy Loading, Memoization)
 - [ ] Advanced features
