@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"sync"
@@ -69,7 +68,7 @@ func main() {
 
 	// 2. Worker Pool for Concurrent Updates
 	var wg sync.WaitGroup
-	semaphore := make(chan struct{}, 10) // Limit to 10 concurrent requests
+	semaphore := make(chan struct{}, 1) // Limit to 1 concurrent request (Sequential)
 
 	startTime := time.Now()
 
@@ -81,8 +80,8 @@ func main() {
 			defer wg.Done()
 			defer func() { <-semaphore }() // Release token
 
-			// Random jitter to avoid 429s (0.5s to 2.5s delay)
-			time.Sleep(time.Millisecond * time.Duration(500+rand.Intn(2000)))
+			// Fixed 2s delay to be polite to free API
+			time.Sleep(2 * time.Second)
 
 			// Fetch real price
 			price, err := fetchPrice(s.Symbol)
@@ -116,7 +115,14 @@ type YahooResponse struct {
 func fetchPrice(symbol string) (float64, error) {
 	url := fmt.Sprintf("https://query1.finance.yahoo.com/v8/finance/chart/%s?interval=1d&range=1d", symbol)
 	
-	resp, err := http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return 0, err
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		return 0, err
 	}
