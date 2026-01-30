@@ -11,9 +11,6 @@
 
 <p align="center">
   <strong>A real-time stock discussion and prediction platform</strong><br/>
-  Accuracy-based reputation · Time-expiring knowledge · Live analytics
-</p>-time stock discussion and prediction platform with accuracy-based reputation, time-expiring knowledge, and live analytics.
-
 ## Features
 
 - **Real-time Chat** - Live discussions per stock using WebSockets
