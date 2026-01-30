@@ -102,6 +102,11 @@ npm run dev:client  # Frontend on http://localhost:5173
 
 See the [Docker Deployment Guide](docs/deployment/DOCKER.md) for details.
 
+> [!WARNING]
+> **Security Notice**
+>
+> Do **NOT** commit your `.env` file to version control.  
+> Always use strong, unique secrets in production and rotate them regularly.
 ### Environment Variables
 
 Create `server/.env`:
@@ -117,13 +122,13 @@ NODE_ENV=development
 
 ### Key Collections
 
-- **Users** - Authentication and reputation
-- **Stocks** - Stock information (mock data)
-- **Questions** - Q&A questions
-- **Answers** - Time-expiring answers (TTL index)
-- **Predictions** - Price predictions with evaluation
-- **ChatMessages** - Real-time chat
-- **ReputationSnapshots** - Historical reputation tracking
+- <span style="color:#2ecc71;"><strong>Users</strong></span> – User accounts, authentication, and reputation data  
+- <span style="color:#3498db;"><strong>Stocks</strong></span> – Stock metadata and pricing information (mock or live)  
+- <span style="color:#9b59b6;"><strong>Questions</strong></span> – User-submitted questions related to stocks  
+- <span style="color:#e67e22;"><strong>Answers</strong></span> – Time-expiring answers using TTL indexes to prevent outdated information  
+- <span style="color:#e74c3c;"><strong>Predictions</strong></span> – Stock price predictions with accuracy evaluation and scoring  
+- <span style="color:#1abc9c;"><strong>ChatMessages</strong></span> – Real-time, stock-specific chat messages  
+- <span style="color:#f1c40f;"><strong>ReputationSnapshots</strong></span> – Historical snapshots of user reputation over time  
 
 ## API Endpoints
 
@@ -159,15 +164,18 @@ Socket.io events:
 - `stock:update` - Stock price update
 
 > [!NOTE]
->## Testing
+> ## Testing
 >
->```bash
-># Run backend tests
->cd server && npm test
+> **Backend tests**
+> ```bash
+> cd server && npm test
+> ```
+>
+> **Frontend tests**
+> ```bash
+> cd client && npm test
+> ```
 
-># Run frontend tests
->cd client && npm test
->```
 
 ## Development Roadmap
 
@@ -190,4 +198,4 @@ MIT
 
 ## Contributing
 
-Contributions welcome! Please open an issue or submit a PR.
+<span style="color: green;">Contributions are welcome! Please open an issue or submit a pull request.</span>
