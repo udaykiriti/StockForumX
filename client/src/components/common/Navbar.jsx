@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FaSearch } from 'react-icons/fa';
+import NotificationBell from './NotificationBell';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -75,6 +76,7 @@ const Navbar = () => {
                     <div className="navbar-content">
                         <div className="navbar-links">
                             <Link to="/stocks" className="nav-link" onClick={() => setIsMenuOpen(false)}>Stocks</Link>
+                            <Link to="/feed" className="nav-link" onClick={() => setIsMenuOpen(false)}>Feed</Link>
                             <Link to="/leaderboard" className="nav-link" onClick={() => setIsMenuOpen(false)}>Leaderboard</Link>
                             {isAuthenticated && (
                                 <Link to="/portfolio" className="nav-link portfolio-link" onClick={() => setIsMenuOpen(false)}>Portfolio</Link>
@@ -84,6 +86,7 @@ const Navbar = () => {
                         <div className="navbar-auth">
                             {isAuthenticated ? (
                                 <div className="user-section">
+                                    <NotificationBell />
                                     <Link to={`/profile/${user._id}`} className="user-profile-link" onClick={() => setIsMenuOpen(false)}>
                                         <div className="avatar-small">
                                             {user.username.charAt(0).toUpperCase()}

@@ -1,0 +1,175 @@
+/* Neo-Brutalist Feed Styles */
+.feed-container {
+    padding-top: 3rem;
+    min-height: 80vh;
+    background-color: #f0f0f0;
+    /* Light gray background for contrast */
+}
+
+.feed-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    padding: 2rem;
+    background: #fff;
+    border: 3px solid #000;
+    box-shadow: 8px 8px 0px #000;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    transform: rotate(-1deg);
+}
+
+.feed-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 0.5rem;
+    letter-spacing: -2px;
+    line-height: 1;
+    text-shadow: 2px 2px 0px #ccc;
+}
+
+.feed-subtitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #555;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Empty State - The "Brute" Box */
+.feed-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border: 4px solid #000;
+    box-shadow: 12px 12px 0px #000;
+    /* Deep hard shadow */
+    text-align: center;
+    max-width: 600px;
+    margin: 2rem auto;
+    transition: transform 0.2s ease;
+}
+
+.feed-empty-state:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 14px 14px 0px #000;
+}
+
+.feed-empty-icon {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    filter: drop-shadow(4px 4px 0px #000);
+    /* Icon shadow */
+    animation: bounce 2s infinite;
+}
+
+.feed-empty-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+    max-width: 80%;
+}
+
+/* Button - High Contrast */
+.btn-find-people {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: #FFD700;
+    /* Brute Yellow */
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0px #000;
+    transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+}
+
+.btn-find-people:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 10px 10px 0px #000;
+    background: #fff;
+}
+
+.btn-find-people:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+/* Feed List Items (if any present) */
+.feed-list .stock-card {
+    border: 3px solid #000 !important;
+    box-shadow: 8px 8px 0px #000 !important;
+    border-radius: 0 !important;
+    /* No rounded corners in brutalism */
+    background: #fff;
+    margin-bottom: 2rem !important;
+    transition: all 0.2s ease;
+}
+
+.feed-list .stock-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px #000 !important;
+}
+
+.feed-list .card-header {
+    background: #000;
+    color: #fff;
+    padding: 1rem;
+    border-bottom: 3px solid #000;
+}
+
+.feed-list .user-info a {
+    color: #fff !important;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
+.feed-list .reputation-badge {
+    background: #FFD700;
+    color: #000;
+    border: 2px solid #fff;
+    font-weight: bold;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feed-header {
+        transform: none;
+        margin: 1rem;
+        width: auto;
+    }
+
+    .feed-title {
+        font-size: 2.5rem;
+    }
+
+    .feed-empty-state {
+        margin: 1rem;
+        box-shadow: 8px 8px 0px #000;
+    }
+}

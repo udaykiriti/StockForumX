@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserStats, getUserPredictions, getQuestions, followUser } from '../services/api';
+import { getUserStats, getUserPredictions, getQuestions, followUser, unfollowUser } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ProfileEdit from '../components/profile/ProfileEdit';
 import Loader from '../components/common/Loader';
@@ -149,12 +149,21 @@ const Profile = () => {
 
     const handleFollow = async () => {
         try {
-            const { data } = await followUser(id);
-            toast.success(data.message);
+            const isFollowing = user.followers?.includes(currentUser._id);
+            let response;
+
+            if (isFollowing) {
+                const { data } = await unfollowUser(id);
+                response = data;
+            } else {
+                const { data } = await followUser(id);
+                response = data;
+            }
+
+            toast.success(response.message);
 
             // Update local user state to reflect changes
             setUser(prev => {
-                const isFollowing = prev.followers.includes(currentUser._id);
                 let newFollowers = [...(prev.followers || [])];
 
                 if (isFollowing) {

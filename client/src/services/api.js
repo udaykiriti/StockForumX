@@ -31,7 +31,14 @@ export const getUserProfile = (userId) => axios.get(`${API_BASE}/users/${userId}
 export const getUserStats = (userId) => axios.get(`${API_BASE}/users/${userId}/stats`);
 export const updateProfile = (data) => axios.put(`${API_BASE}/users/profile`, data);
 export const getUserCount = () => axios.get(`${API_BASE}/users/count`);
-export const followUser = (id) => axios.post(`${API_BASE}/users/${id}/follow`);
+
+// Social
+export const followUser = (id) => axios.post(`${API_BASE}/social/follow/${id}`);
+export const unfollowUser = (id) => axios.delete(`${API_BASE}/social/follow/${id}`);
+export const getFeed = (page = 1) => axios.get(`${API_BASE}/social/feed`, { params: { page } });
+export const getNotifications = () => axios.get(`${API_BASE}/social/notifications`);
+export const markNotificationRead = (id) => axios.put(`${API_BASE}/social/notifications/${id}/read`);
+export const markAllNotificationsRead = () => axios.put(`${API_BASE}/social/notifications/read-all`);
 
 // Portfolio & Trading
 export const getPortfolio = () => axios.get(`${API_BASE}/portfolio`);

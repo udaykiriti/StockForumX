@@ -16,6 +16,7 @@ import questionRoutes from './routes/questions.js';
 import predictionRoutes from './routes/predictions.js';
 import userRoutes from './routes/users.js';
 import portfolioRoutes from './routes/portfolio.js';
+import socialRoutes from './routes/social.js';
 
 // Sockets
 import { setupChatHandlers } from './sockets/chat.js';
@@ -57,6 +58,10 @@ const limiter = rateLimit({
 });
 
 // Middleware
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 app.use(helmet());
 app.use(compression());
 app.use(cors());
@@ -71,6 +76,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/predictions', predictionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/portfolio', portfolioRoutes);
+app.use('/api/social', socialRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
