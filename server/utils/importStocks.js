@@ -47,7 +47,36 @@ const stocks = [
     { symbol: 'SOL-USD', name: 'Solana', sector: 'Crypto', currentPrice: 145.40, previousClose: 142.10, volume: 4200000000, marketCap: 65000000000, high24h: 150.20, low24h: 140.50, description: 'High-speed blockchain.' },
     { symbol: 'XRP-USD', name: 'XRP', sector: 'Crypto', currentPrice: 0.62, previousClose: 0.61, volume: 1500000000, marketCap: 35000000000, high24h: 0.64, low24h: 0.59, description: 'Payment settlement.' },
     { symbol: 'ADA-USD', name: 'Cardano', sector: 'Crypto', currentPrice: 0.45, previousClose: 0.46, volume: 450000000, marketCap: 16000000000, high24h: 0.48, low24h: 0.44, description: 'Proof-of-stake blockchain.' },
-    { symbol: 'DOGE-USD', name: 'Dogecoin', sector: 'Crypto', currentPrice: 0.16, previousClose: 0.15, volume: 2100000000, marketCap: 23000000000, high24h: 0.18, low24h: 0.14, description: 'Community coin.' }
+    { symbol: 'DOGE-USD', name: 'Dogecoin', sector: 'Crypto', currentPrice: 0.16, previousClose: 0.15, volume: 2100000000, marketCap: 23000000000, high24h: 0.18, low24h: 0.14, description: 'Community coin.' },
+
+    // AI & Datacenters
+    { symbol: 'PLTR', name: 'Palantir Technologies', sector: 'AI/Software', currentPrice: 24.50, previousClose: 23.80, volume: 55000000, marketCap: 55000000000, description: 'Big data analytics.' },
+    { symbol: 'SMCI', name: 'Super Micro Computer', sector: 'AI/Infrastructure', currentPrice: 850.20, previousClose: 840.50, volume: 8000000, marketCap: 50000000000, description: 'AI server solutions.' },
+    { symbol: 'SNOW', name: 'Snowflake Inc.', sector: 'Cloud', currentPrice: 165.40, previousClose: 168.20, volume: 6000000, marketCap: 55000000000, description: 'Data cloud platform.' },
+
+    // ETFs & Indices
+    { symbol: 'SPY', name: 'SPDR S&P 500 ETF', sector: 'ETF', currentPrice: 510.20, previousClose: 508.50, volume: 75000000, marketCap: 500000000000, description: 'Tracking S&P 500.' },
+    { symbol: 'QQQ', name: 'Invesco QQQ Trust', sector: 'ETF', currentPrice: 440.50, previousClose: 438.20, volume: 45000000, marketCap: 250000000000, description: 'Tracking Nasdaq 100.' },
+    { symbol: 'VOO', name: 'Vanguard S&P 500 ETF', sector: 'ETF', currentPrice: 468.40, previousClose: 466.80, volume: 5000000, marketCap: 400000000000, description: 'Low cost S&P 500 index.' },
+
+    // Real Estate & Infrastructure
+    { symbol: 'AMT', name: 'American Tower Corp', sector: 'Real Estate', currentPrice: 195.40, previousClose: 198.20, volume: 2500000, marketCap: 90000000000, description: 'Cell tower REIT.' },
+    { symbol: 'PLD', name: 'Prologis, Inc.', sector: 'Real Estate', currentPrice: 128.60, previousClose: 130.40, volume: 3500000, marketCap: 120000000000, description: 'Logistics real estate.' },
+
+    // Utilities & Clean Energy
+    { symbol: 'NEE', name: 'NextEra Energy, Inc.', sector: 'Utilities', currentPrice: 62.40, previousClose: 61.80, volume: 8500000, marketCap: 125000000000, description: 'Renewable energy giant.' },
+    { symbol: 'DUK', name: 'Duke Energy Corp', sector: 'Utilities', currentPrice: 95.20, previousClose: 94.50, volume: 3200000, marketCap: 75000000000, description: 'Electric power company.' },
+    { symbol: 'ENPH', name: 'Enphase Energy', sector: 'Clean Energy', currentPrice: 115.80, previousClose: 118.40, volume: 4500000, marketCap: 15000000000, description: 'Solar energy tech.' },
+
+    // Materials & Industrials
+    { symbol: 'FCX', name: 'Freeport-McMoRan', sector: 'Materials', currentPrice: 45.20, previousClose: 44.50, volume: 15000000, marketCap: 65000000000, description: 'Mining (Copper/Gold).' },
+    { symbol: 'ALB', name: 'Albemarle Corp', sector: 'Materials', currentPrice: 125.60, previousClose: 128.20, volume: 2800000, marketCap: 15000000000, description: 'Lithium producer.' },
+    { symbol: 'BA', name: 'Boeing Co', sector: 'Aerospace', currentPrice: 185.40, previousClose: 188.20, volume: 6500000, marketCap: 115000000000, description: 'Aircraft manufacturing.' },
+
+    // Global/China Emerging Tech
+    { symbol: 'BABA', name: 'Alibaba Group', sector: 'E-commerce', currentPrice: 75.40, previousClose: 76.20, volume: 20000000, marketCap: 190000000000, description: 'Global e-commerce.' },
+    { symbol: 'JD', name: 'JD.com, Inc.', sector: 'E-commerce', currentPrice: 28.50, previousClose: 29.10, volume: 12000000, marketCap: 45000000000, description: 'Chinese retailer.' },
+    { symbol: 'SE', name: 'Sea Limited', sector: 'Platform', currentPrice: 55.40, previousClose: 53.80, volume: 5500000, marketCap: 30000000000, description: 'Gaming and Shopee.' }
 ];
 
 const importStocks = async () => {
