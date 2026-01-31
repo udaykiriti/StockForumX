@@ -6,66 +6,78 @@ The microservices in Stock Forum X are written in Go (Golang). This guide explai
 - **Go 1.22+** installed on your system.
 - **MongoDB** instance running (all services require a connection string).
 
-## Compiling Go Services
+## Working with Services
 
-Each service is located in its own folder under `/services/[service-name]`. They are standalone Go modules.
-
-### 1. Manual Compilation (Standard)
-
-To compile a service into a binary:
-
+### 1. Initializing a New Service
+If you create a new folder for a service, you must initialize it as a Go module:
 ```bash
-# Navigate to the service folder
-cd services/alert-engine
-
-# Download dependencies (defined in go.mod)
-go mod download
-
-# Build the executable
-# On Windows:
-go build -o service.exe main.go
-
-# On Linux/macOS:
-go build -o service main.go
+cd services/my-new-service
+go mod init my-new-service
 ```
 
-### 2. Building for Production (Cross-Compilation)
-If you are developing on Windows but deploying to a Linux server:
+### 2. Dependency Management (`go mod tidy`)
+The most important command for dependencies is `go mod tidy`. You should run this whenever you add, remove, or update code imports. It syncs your code with the `go.mod` file.
 
 ```bash
-# Set environment variables for Linux
-$env:GOOS="linux"; $env:GOARCH="amd64"
-go build -o service_linux main.go
+# Cleans up unused dependencies and adds missing ones
+go mod tidy
+
+# Verification
+go mod verify
 ```
 
-## Running Services
+### 3. Compiling to a Binary
+Compiling creates a standalone executable file that doesn't require Go to be installed on the destination machine.
 
-### Manual Method
-Ensure your `.env` file in the `/server` folder has the correct `MONGODB_URI`.
+**On Windows (PowerShell):**
+```powershell
+cd services/sentiment-service
+go build -o sentiment.exe main.go
+./sentiment.exe
+```
 
+**On Linux/macOS:**
+```bash
+cd services/sentiment-service
+go build -o sentiment main.go
+chmod +x sentiment
+./sentiment
+```
+
+## How to Run Services
+
+There are three ways to run these microservices depending on your environment.
+
+### 1. Development Mode (`go run`)
+The fastest way to test changes without compiling. Go will compile the code to a temporary directory and execute it.
 ```bash
 cd services/alert-engine
 go run main.go
 ```
 
-### Docker Method (Recommended)
-We use Multi-stage builds in our Dockerfiles to keep images small. To start all services at once:
-
+### 2. Docker Orchestration (Recommended)
+This is the easiest way to run the entire project (Frontend, Backend, and all 5 Go Services) at once.
 ```bash
-# From the root directory
+# In the project root
 docker-compose up --build
 ```
-
-Specific service build:
+To run only a specific service:
 ```bash
-docker build -t stockforumx-oracle ./services/oracle-service
+docker-compose up alert-engine
 ```
 
-## Dependency Management
-If you add new libraries to a service:
-1. Run `go get [package_name]`
-2. Run `go mod tidy` to clean up the `go.mod` and `go.sum` files.
+### 3. Running Compiled Binaries
+Use this if you want to run the service without having Go installed or if you are deploying to a server.
+```bash
+# Compile first
+cd services/analytics-service
+go build -o analytics.exe main.go
 
-## Common Issues
+# Then run the binary
+./analytics.exe
+```
+
+> [!TIP]
+> **Environment Variables**: All services look for the `MONGODB_URI` environment variable. If you are running with `go run` or binaries, ensure your shell has this variable exported or a `.env` file exists.
 - **Change Stream Failures**: Most services require MongoDB to be running in **Replica Set** mode to support Change Streams.
 - **Context Deadlines**: If a service fails to connect, verify your `MONGODB_URI` environment variable is accessible from the service's runtime.
