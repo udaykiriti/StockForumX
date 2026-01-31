@@ -79,6 +79,20 @@ services:
     networks:
       - stockforumx-network
 
+  alert-engine:
+    build:
+      context: ./services/alert-engine
+      dockerfile: Dockerfile
+    container_name: stockforumx-alert-engine
+    restart: unless-stopped
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/stockforumx
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - stockforumx-network
+
 networks:
   stockforumx-network:
     driver: bridge
