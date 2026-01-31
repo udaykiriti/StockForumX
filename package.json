@@ -15,6 +15,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npm run dev --workspace=server",
     "dev:client": "npm run dev --workspace=client",
+    "dev:services": "concurrently \"cd services/price-updater && go run main.go\" \"cd services/alert-engine && go run main.go\" \"cd services/analytics-service && go run main.go\" \"cd services/sentiment-service && go run main.go\" \"cd services/oracle-service && go run main.go\"",
+    "dev:all": "concurrently \"npm run dev:server\" \"npm run dev:client\" \"npm run dev:services\"",
     "build": "npm run build --workspaces --if-present",
     "lint": "echo 'Linting not configured yet' && exit 0",
     "test": "npm test --workspaces --if-present",
