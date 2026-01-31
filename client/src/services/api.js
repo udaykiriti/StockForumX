@@ -7,6 +7,7 @@ export const getStocks = (params) => axios.get(`${API_BASE}/stocks`, { params })
 export const getStock = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}`);
 export const getStockHistory = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}/history`);
 export const getTrendingQuestions = (symbol) => axios.get(`${API_BASE}/stocks/${symbol}/trending`);
+export const getSectors = () => axios.get(`${API_BASE}/stocks/sectors`);
 
 // Questions
 export const getQuestions = (params) => axios.get(`${API_BASE}/questions`, { params });

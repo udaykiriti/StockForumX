@@ -145,6 +145,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+// @route   GET /api/stocks/sectors
+// @desc    Get all unique sectors
+// @access  Public
+router.get('/sectors', async (req, res) => {
+    try {
+        const sectors = await Stock.distinct('sector');
+        res.json(sectors.filter(Boolean).sort());
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 // @route   GET /api/stocks/:symbol
 // @desc    Get stock by symbol (Active Lookup)
 // @access  Public

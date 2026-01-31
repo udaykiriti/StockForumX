@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getStocks } from '../services/api';
+import { getStocks, getSectors } from '../services/api';
 import SearchBar from '../components/search/SearchBar';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import EmptyState from '../components/common/EmptyState';
@@ -13,6 +13,20 @@ const StockList = () => {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [sectors, setSectors] = useState(['all']);
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                const { data: sectorData } = await getSectors();
+                setSectors(['all', ...sectorData]);
+                await fetchStocks();
+            } catch (error) {
+                console.error('Failed to load initial data');
+            }
+        };
+        fetchInitialData();
+    }, []);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -36,8 +50,6 @@ const StockList = () => {
     const filteredStocks = filter === 'all'
         ? stocks
         : stocks.filter(s => s.sector === filter);
-
-    const sectors = ['all', ...new Set(stocks.map(s => s.sector).filter(Boolean))];
 
     if (loading) {
         return (
