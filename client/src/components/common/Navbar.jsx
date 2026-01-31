@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FaSearch } from 'react-icons/fa';
+import { getStocks } from '../../services/api';
 import NotificationBell from './NotificationBell';
 import './Navbar.css';
 
@@ -10,6 +11,23 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [tickerStocks, setTickerStocks] = useState([]);
+
+    useEffect(() => {
+        const fetchTickerData = async () => {
+            try {
+                const { data } = await getStocks({ limit: 10, sortBy: 'trending' });
+                setTickerStocks(data.data || []);
+            } catch (error) {
+                console.error('Failed to fetch ticker data:', error);
+            }
+        };
+        fetchTickerData();
+
+        // Refresh every minute
+        const interval = setInterval(fetchTickerData, 60000);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -28,18 +46,19 @@ const Navbar = () => {
                     {/* Render twice for infinite scroll */}
                     {[...Array(2)].map((_, i) => (
                         <div key={i} className="ticker-content-group">
-                            <span className="ticker-pair">BTC/USD <span className="ticker-up">$42,904 (+1.2%)</span></span>
-                            <span className="ticker-separator">///</span>
-                            <span className="ticker-pair">ETH/USD <span className="ticker-down">$2,215 (-0.4%)</span></span>
-                            <span className="ticker-separator">///</span>
-                            <span className="ticker-pair">AAPL <span className="ticker-up">$189.43 (+0.8%)</span></span>
-                            <span className="ticker-separator">///</span>
-                            <span className="ticker-pair">TSLA <span className="ticker-down">$193.57 (-2.1%)</span></span>
-                            <span className="ticker-separator">///</span>
-                            <span className="ticker-pair">NVDA <span className="ticker-up">$726.13 (+4.2%)</span></span>
-                            <span className="ticker-separator">///</span>
-                            <span className="ticker-pair">IXIC <span className="ticker-up">15,990.66 (+0.3%)</span></span>
-                            <span className="ticker-separator">///</span>
+                            {tickerStocks.length > 0 ? (
+                                tickerStocks.map(stock => (
+                                    <Link key={stock.symbol} to={`/stock/${stock.symbol}`} className="ticker-pair">
+                                        {stock.symbol}
+                                        <span className={stock.change >= 0 ? 'ticker-up' : 'ticker-down'}>
+                                            ${stock.currentPrice.toFixed(2)} ({stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%)
+                                        </span>
+                                        <span className="ticker-separator">///</span>
+                                    </Link>
+                                ))
+                            ) : (
+                                <span className="ticker-status-badge">INITIALIZING LIVE FEED...</span>
+                            )}
                             <span className="ticker-status-badge">MARKET STATUS: <span className="status-live">LIVE</span></span>
                             <span className="ticker-separator">///</span>
                         </div>

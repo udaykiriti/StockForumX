@@ -57,6 +57,13 @@
     gap: 8px;
     align-items: center;
     color: #e2e8f0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ticker-pair:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .ticker-separator {
