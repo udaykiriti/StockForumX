@@ -16,20 +16,18 @@ let stocksCache = {
 
 // Mock Data
 // @route   GET /api/stocks
-// @desc    Get all stocks
+// @desc    Get all stocks with pagination and filtering
 // @access  Public
 router.get('/', async (req, res) => {
     try {
-        const { search } = req.query;
-
-        // Return cached data if available and fresh (only for full list)
-        if (!search && stocksCache.data && (Date.now() - stocksCache.lastUpdated < stocksCache.ttl)) {
-            return res.json(stocksCache.data);
-        }
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 12; // 12 stocks per page
+        const skip = (page - 1) * limit;
+        const { search, sector } = req.query;
 
         let query = {};
 
-        // 1. Local DB Search
+        // 1. Filtering Logic
         if (search) {
             query.$or = [
                 { symbol: { $regex: search, $options: 'i' } },
@@ -37,108 +35,32 @@ router.get('/', async (req, res) => {
             ];
         }
 
-        const localStocks = await Stock.find(query).sort({ symbol: 1 }).lean();
-
-        // Auto-seed if empty and no search
-        if (!search && localStocks.length === 0) {
-            console.log('No stocks found in DB. Seeding popular stocks...');
-            const POPULAR_TICKERS = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'NFLX', 'AMD', 'INTC'];
-
-            try {
-                const results = await Promise.all(
-                    POPULAR_TICKERS.map(async (symbol) => {
-                        try {
-                            const quote = await yahooFinance.quote(symbol);
-                            if (!quote) return null;
-
-                            return Stock.findOneAndUpdate(
-                                { symbol },
-                                {
-                                    $set: {
-                                        name: quote.longName || quote.shortName || symbol,
-                                        symbol,
-                                        currentPrice: quote.regularMarketPrice,
-                                        previousClose: quote.regularMarketPreviousClose,
-                                        change: quote.regularMarketChange,
-                                        changePercent: quote.regularMarketChangePercent,
-                                        volume: quote.regularMarketVolume,
-                                        marketCap: quote.marketCap,
-                                        high24h: quote.regularMarketDayHigh,
-                                        low24h: quote.regularMarketDayLow,
-                                        sector: 'Technology' // Default/Placeholder as quote doesn't always have it
-                                    }
-                                },
-                                { upsert: true, new: true, setDefaultsOnInsert: true }
-                            ).lean();
-                        } catch (e) {
-                            console.error(`Failed to seed ${symbol}:`, e.message);
-                            return null;
-                        }
-                    })
-                );
-
-                const seededStocks = results.filter(Boolean);
-                // Return immediately if specifically asking for list
-                if (seededStocks.length > 0) {
-                    return res.json(seededStocks.sort((a, b) => a.symbol.localeCompare(b.symbol)));
-                }
-            } catch (seedError) {
-                console.error('Auto-seed failed:', seedError);
-            }
+        if (sector && sector !== 'all') {
+            query.sector = sector;
         }
 
-        // 2. Yahoo Finance Search (if search term exists)
-        let yahooResults = [];
-        if (search && search.length > 1) { // Avoid searching for single chars if performance is a concern
-            try {
-                const result = await yahooFinance.search(search);
-                if (result.quotes) {
-                    yahooResults = result.quotes
-                        .filter(q => (q.quoteType === 'EQUITY' || q.quoteType === 'ETF' || q.quoteType === 'MUTUALFUND')) // Filter relevant types
-                        .map(q => ({
-                            symbol: q.symbol,
-                            name: q.shortname || q.longname || q.symbol,
-                            currentPrice: 0, // Search specific endpoint usually doesn't give price, client handles this or fetches detail
-                            previousClose: 0,
-                            change: 0,
-                            changePercent: 0,
-                            // Flag to indicate this is a preview/remote result
-                            isRemote: true
-                        }));
-                }
-            } catch (err) {
-                console.warn("Yahoo Search Error:", err.message);
-            }
+        // 2. Fetch Data and Total Count
+        const total = await Stock.countDocuments(query);
+        const stocks = await Stock.find(query)
+            .sort({ symbol: 1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        // 3. Auto-seed if empty (only for main page)
+        if (!search && !sector && page === 1 && total === 0) {
+            // ... (keep search/seeding logic for robustness if needed, 
+            // but we have a seeder now, so we can simplify)
         }
 
-        // 3. Merge Results
-        // Create a map of existing symbols to avoid duplicates
-        const stockMap = new Map();
-        localStocks.forEach(s => stockMap.set(s.symbol, s));
-
-        yahooResults.forEach(y => {
-            if (!stockMap.has(y.symbol)) {
-                stockMap.set(y.symbol, y);
-            }
+        res.json({
+            success: true,
+            count: stocks.length,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+            data: stocks
         });
-
-        // Convert back to array
-        const combinedStocks = Array.from(stockMap.values());
-
-        // Sort: Exact matches first, then DB results, then Yahoo results
-        // Simple sort by symbol for now
-        combinedStocks.sort((a, b) => a.symbol.localeCompare(b.symbol));
-
-        // Update cache if this was a full list fetch
-        if (!search) {
-            stocksCache = {
-                data: combinedStocks,
-                lastUpdated: Date.now(),
-                ttl: 60 * 1000
-            };
-        }
-
-        res.json(combinedStocks);
     } catch (error) {
         console.error('Error fetching stocks:', error);
         res.status(500).json({ message: 'Error fetching stocks' });

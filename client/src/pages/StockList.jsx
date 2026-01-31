@@ -14,13 +14,16 @@ const StockList = () => {
     const [filter, setFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [sectors, setSectors] = useState(['all']);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
                 const { data: sectorData } = await getSectors();
                 setSectors(['all', ...sectorData]);
-                await fetchStocks();
+                await fetchStocks(1);
             } catch (error) {
                 console.error('Failed to load initial data');
             }
@@ -30,16 +33,25 @@ const StockList = () => {
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            fetchStocks();
+            setPage(1);
+            fetchStocks(1);
         }, 300);
         return () => clearTimeout(timeoutId);
-    }, [searchQuery]);
+    }, [searchQuery, filter]);
 
-    const fetchStocks = async () => {
+    const fetchStocks = async (pageNum = page) => {
+        setLoading(true);
         try {
-            const params = searchQuery ? { search: searchQuery } : {};
-            const { data } = await getStocks(params);
-            setStocks(Array.isArray(data) ? data : []);
+            const params = {
+                page: pageNum,
+                limit: 12,
+                search: searchQuery,
+                sector: filter
+            };
+            const { data: res } = await getStocks(params);
+            setStocks(res.data || []);
+            setTotalPages(res.totalPages || 1);
+            setTotal(res.total || 0);
         } catch (error) {
             toast.error('Failed to load stocks');
         } finally {
@@ -47,26 +59,20 @@ const StockList = () => {
         }
     };
 
-    const filteredStocks = filter === 'all'
-        ? stocks
-        : stocks.filter(s => s.sector === filter);
-
-    if (loading) {
-        return (
-            <div className="stock-list-page">
-                <div className="container">
-                    <LoadingSkeleton type="stock" count={6} />
-                </div>
-            </div>
-        );
-    }
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setPage(newPage);
+            fetchStocks(newPage);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
     return (
         <div className="stock-list-page fade-in">
-            <div className="container" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 100px)' }}>
+            <div className="container" style={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 100px)' }}>
                 <div className="page-header">
                     <h1>Stocks</h1>
-                    <p>Browse stocks by sector and market performance</p>
+                    <p>Total {total} stocks available across {sectors.length - 1} sectors</p>
                 </div>
 
                 <div style={{ marginBottom: '20px' }}>
@@ -92,8 +98,10 @@ const StockList = () => {
                 </div>
 
                 <div className="stocks-grid">
-                    {filteredStocks.length > 0 ? (
-                        filteredStocks.map(stock => (
+                    {loading ? (
+                        <LoadingSkeleton type="stock" count={12} />
+                    ) : stocks.length > 0 ? (
+                        stocks.map(stock => (
                             <Link to={`/stock/${stock.symbol}`} key={stock._id} className="stock-card">
                                 <div className="stock-header">
                                     <div>
@@ -128,11 +136,37 @@ const StockList = () => {
                                 title="STOCKS NOT FOUND"
                                 message={`We couldn't find any stocks matching "${searchQuery}"`}
                                 action="Reset Search"
-                                onAction={() => setSearchQuery('')}
+                                onAction={() => { setSearchQuery(''); setFilter('all'); }}
                             />
                         </div>
                     )}
                 </div>
+
+                {!loading && totalPages > 1 && (
+                    <div className="pagination" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', padding: '40px 0' }}>
+                        <button
+                            className="filter-btn"
+                            disabled={page === 1}
+                            onClick={() => handlePageChange(page - 1)}
+                            style={{ padding: '8px 20px', opacity: page === 1 ? 0.5 : 1 }}
+                        >
+                            Previous
+                        </button>
+
+                        <span style={{ fontWeight: '600', color: 'var(--text-secondary)' }}>
+                            Page {page} of {totalPages}
+                        </span>
+
+                        <button
+                            className="filter-btn"
+                            disabled={page === totalPages}
+                            onClick={() => handlePageChange(page + 1)}
+                            style={{ padding: '8px 20px', opacity: page === totalPages ? 0.5 : 1 }}
+                        >
+                            Next
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
