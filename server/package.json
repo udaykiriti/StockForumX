@@ -24,10 +24,12 @@
         "helmet": "^8.1.0",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.0.3",
+        "morgan": "^1.10.1",
         "natural": "^6.10.4",
         "node-cron": "^3.0.3",
         "nodemailer": "^7.0.12",
         "socket.io": "^4.6.1",
+        "winston": "^3.19.0",
         "yahoo-finance2": "^3.13.0"
     },
     "devDependencies": {

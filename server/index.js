@@ -6,8 +6,11 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import compression from 'compression';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 import connectDB from './config/db.js';
 import validateEnv from './config/validateEnv.js';
+import Logger from './utils/logger.js';
+import { errorHandler } from './middleware/errorMiddleware.js';
 
 // Routes
 import authRoutes from './routes/auth.js';
@@ -64,6 +67,7 @@ app.use((req, res, next) => {
 });
 app.use(helmet());
 app.use(compression());
+app.use(morgan('combined', { stream: { write: (message) => Logger.info(message.trim()) } }));
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true
@@ -81,19 +85,13 @@ app.use('/api/users', userRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/social', socialRoutes);
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error('Unhandled Error:', err);
-    res.status(500).json({
-        message: 'Internal Server Error',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
-});
-
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'StockForumX API is running' });
 });
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Socket.io connection
 io.on('connection', (socket) => {
@@ -111,7 +109,7 @@ startStockPriceUpdater();
 // Start server
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
-    console.log(`
+    Logger.info(`
   ____________________________________________________
  |                                                    |
  |   StockForumX API Server                           |
