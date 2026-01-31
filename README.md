@@ -230,13 +230,13 @@ We use Socket.io for real-time updates.
 
 We have comprehensive documentation available for all parts of the system:
 
-### 📘 Sub-Project Guides
+### Sub-Project Guides
 
 - **Frontend**: [Client Documentation](client/README.md) - Setup, scripts, and component structure.
 - **Backend**: [Server Documentation](server/README.md) - API overview, jobs, and architecture.
 - **Services**: [Price Updater Service](services/price-updater/README.md) - Go microservice details.
 
-### 📚 Detailed Documentation (`docs/`)
+### Detailed Documentation (`docs/`)
 
 - **[Getting Started](docs/getting-started/QUICK_START.md)**: Quick setup guide.
 - **[API Reference](docs/api/API.md)**: Complete endpoint specifications.
