@@ -20,6 +20,7 @@ import predictionRoutes from './routes/predictions.js';
 import userRoutes from './routes/users.js';
 import portfolioRoutes from './routes/portfolio.js';
 import socialRoutes from './routes/social.js';
+import alertRoutes from './routes/alerts.js';
 
 // Sockets
 import { setupChatHandlers } from './sockets/chat.js';
@@ -84,6 +85,7 @@ app.use('/api/predictions', predictionRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/social', socialRoutes);
+app.use('/api/alerts', alertRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
