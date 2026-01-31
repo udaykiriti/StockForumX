@@ -235,7 +235,7 @@ const StockDetail = () => {
 
                     <aside className="stock-sidebar">
                         {isAuthenticated && <TradeBox stock={stock} />}
-                        <div className="sidebar-widget brute-frame">
+                        <div className="sidebar-widget">
                             <h3>About {stock.symbol}</h3>
                             <div className="widget-content">
                                 <p className="stock-description">{stock.description || "No description available."}</p>

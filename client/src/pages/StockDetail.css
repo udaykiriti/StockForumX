@@ -176,13 +176,49 @@
     box-shadow: 6px 6px 0px var(--border-color);
 }
 
-.sidebar-card h3 {
-    font-size: 1.5rem;
+.sidebar-widget {
+    background: white;
+    border: var(--border-width) solid var(--border-color);
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 6px 6px 0px var(--border-color);
+}
+
+.sidebar-widget h3 {
+    font-size: 1.4rem;
     font-weight: 900;
     text-transform: uppercase;
     margin-bottom: 20px;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 10px;
+    background: var(--color-info);
+    padding-left: 10px;
+    margin-left: -25px;
+    margin-right: -25px;
+}
+
+.sidebar-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-stat:last-child {
+    border-bottom: none;
+}
+
+.sidebar-stat .stat-label {
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.sidebar-stat .stat-value {
+    font-weight: 900;
+    font-size: 1.1rem;
 }
 
 .stock-description {
