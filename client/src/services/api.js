@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const API_BASE = '/api';
 
+// Set global timeout
+axios.defaults.timeout = 15000;
+
 // Add a response interceptor
 axios.interceptors.response.use(
     (response) => response,
