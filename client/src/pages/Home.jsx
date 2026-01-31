@@ -66,7 +66,7 @@ const Home = () => {
 
             const results = await Promise.allSettled([
                 getQuestions(params),
-                getStocks({ search: searchQuery }),
+                getStocks({ limit: 5, sortBy: 'trending' }),
                 getUserCount()
             ]);
 
@@ -80,16 +80,7 @@ const Home = () => {
             setQuestions(Array.isArray(questionsRes.data) ? questionsRes.data : []);
             setUserCount(userCountRes.data?.count || 0);
 
-            let stocksData = Array.isArray(stocksRes.data) ? stocksRes.data : [];
-
-            // If NOT searching, show trending (high volume). 
-            // If searching, keep API order (which prioritizes matches)
-            if (!searchQuery) {
-                stocksData = stocksData.sort((a, b) => b.volume - a.volume);
-            }
-
-            // Limit to 5 items for the widget
-            setTrendingStocks(stocksData.slice(0, 5));
+            setTrendingStocks(Array.isArray(stocksRes.data) ? stocksRes.data : []);
         } catch (err) {
             console.error('Fetch error:', err);
             toast.error('Failed to load feed');
