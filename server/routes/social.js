@@ -78,7 +78,7 @@ router.delete('/follow/:id', protect, async (req, res) => {
 });
 
 // @route   GET /api/social/feed
-// @desc    Get activity feed from followed users
+// @desc    Get activity feed from followed users (Optimized with Aggregation)
 // @access  Private
 router.get('/feed', protect, async (req, res) => {
     try {
@@ -88,44 +88,56 @@ router.get('/feed', protect, async (req, res) => {
 
         // 1. Get List of user IDs I follow
         const following = await Follow.find({ follower: req.user._id }).distinct('following');
+        following.push(req.user._id); // Include self
 
-        // Also include self in feed? Optional. Let's include self.
-        following.push(req.user._id);
-
-        // 2. Fetch recent Predictions from these users
-        const predictions = await Prediction.find({ userId: { $in: following } })
-            .sort({ createdAt: -1 })
-            .limit(limit)
-            .populate('userId', 'username reputation')
-            .populate('stockId', 'symbol name')
-            .lean();
-
-        // 3. Fetch recent Questions from these users
-        const questions = await Question.find({ userId: { $in: following } })
-            .sort({ createdAt: -1 })
-            .limit(limit)
-            .populate('userId', 'username reputation')
-            .populate('stockId', 'symbol name')
-            .lean();
-
-        // 4. Merge and sort
-        // Note: This is a simple merge. For strict pagination over mixed collections, 
-        // aggregation pipelines (lookup + union) are better but more complex.
-        // For MVP, fetching 'limit' from both and sorting in memory is acceptable 
-        // if user count is low, but allows drift.
-        // Better: Use $unionWith in aggregation (MongoDB 4.4+)
-
-        // Using strict simple merge for now:
-        const feed = [
-            ...predictions.map(p => ({ ...p, type: 'PREDICTION' })),
-            ...questions.map(q => ({ ...q, type: 'QUESTION' }))
-        ]
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .slice(0, limit);
+        // 2. Aggregation Pipeline
+        const feed = await Prediction.aggregate([
+            // Match Predictions from followed users
+            { $match: { userId: { $in: following } } },
+            // Label as PREDICTION
+            { $addFields: { type: 'PREDICTION' } },
+            // Union with Questions from followed users
+            {
+                $unionWith: {
+                    coll: 'questions',
+                    pipeline: [
+                        { $match: { userId: { $in: following } } },
+                        { $addFields: { type: 'QUESTION' } }
+                    ]
+                }
+            },
+            // Sort merged results
+            { $sort: { createdAt: -1 } },
+            // Pagination
+            { $skip: skip },
+            { $limit: limit },
+            // Populate User
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'userId',
+                    pipeline: [{ $project: { username: 1, reputation: 1 } }]
+                }
+            },
+            { $unwind: '$userId' },
+            // Populate Stock
+            {
+                $lookup: {
+                    from: 'stocks',
+                    localField: 'stockId',
+                    foreignField: '_id',
+                    as: 'stockId',
+                    pipeline: [{ $project: { symbol: 1, name: 1 } }]
+                }
+            },
+            { $unwind: '$stockId' }
+        ]);
 
         res.json(feed);
     } catch (error) {
-        console.error(error);
+        console.error('Feed aggregation error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
