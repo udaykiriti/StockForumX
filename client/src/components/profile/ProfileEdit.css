@@ -1,180 +1,277 @@
-/* Profile Edit Modal */
+/* Profile Edit Modal - Dark Brutalist Theme */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
     animation: fadeIn 0.2s ease-out;
 }
 
-.modal-content {
-    background: white;
-    border-radius: 8px;
+.modal-content.profile-edit-modal {
+    background: #000;
+    border: 3px solid #ff6600;
+    border-radius: 0;
     max-width: 600px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    animation: scaleIn 0.2s ease-out;
-}
-
-.profile-edit-modal {
+    box-shadow: 12px 12px 0px #ff6600;
+    animation: slideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    position: relative;
+    color: #fff;
     padding: 0;
 }
 
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .modal-header {
+    background: #000;
     padding: 24px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .modal-header h2 {
     margin: 0;
-    font-size: 1.5rem;
-    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 2px 2px 0px #ff6600;
+    letter-spacing: -1px;
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    font-size: 2rem;
+    background: #ff6600;
+    border: 2px solid #ff6600;
+    font-size: 1.5rem;
     line-height: 1;
-    color: var(--text-muted);
+    color: #000;
     cursor: pointer;
     padding: 0;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
-    transition: all var(--transition-fast);
+    border-radius: 0;
+    transition: all 0.2s;
+    font-weight: bold;
 }
 
 .close-btn:hover {
-    background: var(--bg-hover);
-    color: var(--text-primary);
+    background: #000;
+    color: #ff6600;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px #fff;
 }
 
 /* Form Styles */
 .profile-edit-form {
-    padding: 24px;
+    padding: 30px;
 }
 
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 14px;
+    margin-bottom: 12px;
+    font-weight: 800;
+    color: #ff6600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .form-input,
 .form-textarea {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: inherit;
-    transition: all var(--transition-fast);
+    padding: 16px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 0;
+    font-size: 1rem;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    transition: all 0.2s;
+    font-weight: 600;
 }
 
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(244, 128, 36, 0.1);
+    border-color: #ff6600;
+    background: #000;
+    box-shadow: 4px 4px 0px #ff3300;
 }
 
 .form-textarea {
     resize: vertical;
-    min-height: 120px;
+    min-height: 150px;
+    line-height: 1.6;
 }
 
 .form-hint {
     display: block;
-    margin-top: 6px;
-    font-size: 12px;
-    color: var(--text-muted);
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #666;
+    font-family: sans-serif;
+    font-weight: 500;
 }
 
 .modal-actions {
     display: flex;
-    gap: 12px;
+    gap: 20px;
     justify-content: flex-end;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    padding: 24px 30px;
+    background: #111;
+    border-top: 2px solid #333;
 }
 
 .modal-actions .btn {
-    min-width: 100px;
+    min-width: 140px;
+    padding: 12px 24px;
+    border-radius: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-width: 3px;
+    border-style: solid;
 }
 
-/* Avatar Upload */
+.btn-secondary {
+    background: transparent;
+    border-color: #333;
+    color: #888;
+}
+
+.btn-secondary:hover {
+    background: #222;
+    color: #fff;
+    border-color: #fff;
+}
+
+.btn-primary {
+    background: #ff6600;
+    border-color: #ff6600;
+    color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.btn-primary:active,
+.btn-primary:focus {
+    outline: none;
+    /* explicitly remove default focus for consistent styling */
+}
+
+.btn-primary:hover {
+    background: #fff;
+    border-color: #fff;
+    color: #000;
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0px #ff6600;
+}
+
+.btn-primary:disabled {
+    background: #333;
+    border-color: #333;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    color: #666;
+}
+
+/* Avatar Upload - Brutalist Style */
 .avatar-upload-group {
-    margin-bottom: 28px;
+    margin-bottom: 40px;
+    background: #111;
+    padding: 20px;
+    border: 2px solid #333;
 }
 
 .avatar-upload-wrapper {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 30px;
 }
 
 .avatar-preview-container {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     flex-shrink: 0;
 }
 
 .avatar-preview-img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: 0;
+    /* Square for brutalist look */
     object-fit: cover;
-    border: 3px solid var(--color-primary);
+    border: 4px solid #ff6600;
+    box-shadow: 6px 6px 0px #000;
 }
 
 .avatar-placeholder-large {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #d96f20));
+    border-radius: 0;
+    background: #222;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 42px;
-    font-weight: bold;
-    color: white;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ff6600;
+    border: 4px solid #ff6600;
+    box-shadow: 6px 6px 0px #000;
 }
 
 .avatar-upload-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 4px;
+    /* match border width offset */
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: rgba(255, 102, 0, 0.8);
+    /* Orange overlay */
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
     cursor: pointer;
 }
 
@@ -183,69 +280,92 @@
 }
 
 .camera-icon {
-    color: white;
-    font-size: 24px;
+    color: #000;
+    font-size: 32px;
 }
 
 .avatar-actions {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 }
 
 .btn-upload-photo,
 .btn-remove-photo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s ease;
+    border: 2px solid;
+    width: 100%;
 }
 
 .btn-upload-photo {
-    background: var(--color-primary);
-    color: white;
-    border: none;
+    background: #ff6600;
+    color: #000;
+    border-color: #ff6600;
 }
 
 .btn-upload-photo:hover {
-    background: var(--color-primary-dark, #d96f20);
-    transform: translateY(-1px);
+    background: #fff;
+    border-color: #fff;
+    transform: translateX(4px);
+    box-shadow: -4px 4px 0px #000;
 }
 
 .btn-remove-photo {
     background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border-color);
+    color: #666;
+    border-color: #333;
 }
 
 .btn-remove-photo:hover {
-    background: #fee2e2;
-    color: #dc2626;
-    border-color: #dc2626;
+    background: #220000;
+    color: #ff3333;
+    border-color: #ff3333;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-    .modal-content {
-        width: 95%;
-        max-height: 95vh;
+    .modal-content.profile-edit-modal {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border: none;
+        border-radius: 0;
     }
 
     .modal-header {
-        padding: 16px;
+        position: sticky;
+        top: 0;
+        z-index: 20;
     }
 
     .profile-edit-form {
-        padding: 16px;
+        padding: 20px;
+    }
+
+    .avatar-upload-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .avatar-actions {
+        width: 100%;
+        flex-direction: row;
     }
 
     .modal-actions {
         flex-direction: column-reverse;
+        padding-bottom: 40px;
+        /* Space for mobile safes areas */
     }
 
     .modal-actions .btn {
