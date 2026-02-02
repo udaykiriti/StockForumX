@@ -32,70 +32,97 @@ const Feed = () => {
     if (loading && page === 1) return <Loader />;
 
     return (
-        <div className="home-container">
+        <div className="feed-container">
             <header className="feed-header">
-                <h1 className="feed-title">Your Feed</h1>
-                <p className="feed-subtitle">Activity from people you follow</p>
+                <h1 className="feed-title">Market Pulse</h1>
+                <p className="feed-subtitle">Live Trading Signals & Discussions</p>
             </header>
 
-            <div className="feed-list" style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div className="feed-list-container">
                 {activities.length === 0 ? (
                     <div className="feed-empty-state">
-                        <div className="feed-empty-icon">👥</div>
-                        <p className="feed-empty-text">No activity yet. Follow some top traders to see their market moves here!</p>
-                        <Link to="/leaderboard" className="btn-find-people">Find People to Follow</Link>
+                        <div className="feed-empty-icon">📡</div>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>No Signal Yet</h2>
+                        <p className="feed-empty-text">The market is quiet. Follow top traders to tune into the noise.</p>
+                        <Link to="/leaderboard" className="btn-find-people">Scout Traders</Link>
                     </div>
                 ) : (
                     activities.map((item) => (
-                        <div key={item._id} className="stock-card" style={{ marginBottom: '1rem' }}>
-                            <div className="card-header">
-                                <div className="user-info">
-                                    <Link to={`/profile/${item.userId._id}`} style={{ fontWeight: 'bold', color: '#fff', textDecoration: 'none' }}>
-                                        {item.userId.username}
-                                    </Link>
-                                    <span className="reputation-badge" style={{ fontSize: '0.8rem', padding: '2px 6px' }}>{item.userId.reputation} Rep</span>
-                                    <span style={{ color: '#888', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
-                                        {item.type === 'PREDICTION' ? 'predicted on' : 'asked regarding'}
-                                    </span>
-                                    <Link to={`/stocks/${item.stockId.symbol}`} style={{ marginLeft: '0.5rem', color: '#4caf50' }}>{item.stockId.symbol}</Link>
-                                </div>
-                                <span className="timestamp">{formatDistanceToNow(new Date(item.createdAt))} ago</span>
+                        <div key={item._id} className={`feed-item ${item.type.toLowerCase()}-item`}>
+                            {/* Left: Stats Sidebar */}
+                            <div className="feed-item-stats">
+                                {item.type === 'PREDICTION' && (
+                                    <>
+                                        <div className={`stat-box ${item.direction === 'UP' ? 'bullish' : 'bearish'}`}>
+                                            <span className="stat-value">{item.direction === 'UP' ? 'Bull' : 'Bear'}</span>
+                                        </div>
+                                        <div className="stat-box neutral">
+                                            <span className="stat-value">${item.targetPrice}</span>
+                                            <span className="stat-label">Target</span>
+                                        </div>
+                                    </>
+                                )}
+                                {item.type === 'QUESTION' && (
+                                    <>
+                                        <div className="stat-box">
+                                            <span className="stat-value">{item.upvotes?.length || 0}</span>
+                                            <span className="stat-label">votes</span>
+                                        </div>
+                                        <div className="stat-box highlight">
+                                            <span className="stat-value">{item.answers?.length || 0}</span>
+                                            <span className="stat-label">answers</span>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
-                            <div className="card-body">
-                                {item.type === 'PREDICTION' && (
-                                    <div className="prediction-preview">
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                                            <span style={{ fontSize: '1.2rem' }}>
-                                                {item.direction === 'UP' ? '🚀 Bullish' : '🐻 Bearish'}
-                                            </span>
-                                            {item.isEvaluated && (
-                                                <span className={`status-badge ${item.isCorrect ? 'correct' : 'incorrect'}`}>
-                                                    {item.isCorrect ? 'Correct' : 'Incorrect'}
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p>{item.reasoning}</p>
-                                        <p>Target: ${item.targetPrice}</p>
-                                    </div>
-                                )}
+                            {/* Right: Main Content */}
+                            <div className="feed-item-content">
+                                <Link
+                                    to={item.type === 'PREDICTION' ? `/stocks/${item.stockId.symbol}` : `/question/${item._id}`}
+                                    className="feed-item-title"
+                                >
+                                    {item.type === 'PREDICTION'
+                                        ? `Prediction: ${item.stockId.symbol} to reach $${item.targetPrice}`
+                                        : item.title}
+                                </Link>
 
-                                {item.type === 'QUESTION' && (
-                                    <div className="question-preview">
-                                        <h3 style={{ margin: '0 0 0.5rem' }}>{item.title}</h3>
-                                        <p style={{ color: '#ccc' }}>{item.content.substring(0, 100)}...</p>
+                                <p className="feed-item-excerpt">
+                                    {item.type === 'PREDICTION' ? item.reasoning : item.content.substring(0, 200) + '...'}
+                                </p>
+
+                                <div className="feed-item-meta">
+                                    <div className="feed-tags">
+                                        <span className="feed-tag stock-tag">{item.stockId.symbol}</span>
+                                        {item.type === 'PREDICTION' && <span className="feed-tag type-tag">Prediction</span>}
+                                        {item.type === 'QUESTION' && <span className="feed-tag type-tag">Question</span>}
                                     </div>
-                                )}
+
+                                    <div className="feed-user-card">
+                                        <div className="feed-user-avatar-sm">
+                                            {item.userId.username.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div className="feed-user-info-mini">
+                                            <Link to={`/profile/${item.userId._id}`} className="mini-username">
+                                                {item.userId.username}
+                                            </Link>
+                                            <span className="mini-time">
+                                                {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))
                 )}
 
-                {activities.length > 0 && (
-                    <button onClick={() => setPage(p => p + 1)} className="btn-secondary" style={{ width: '100%', marginTop: '1rem' }}>
-                        Load More
+                {activities.length > 0 && !loading && (
+                    <button onClick={() => setPage(p => p + 1)} className="btn-load-more">
+                        Load More signals
                     </button>
                 )}
+                {loading && page > 1 && <Loader />}
             </div>
         </div>
     );

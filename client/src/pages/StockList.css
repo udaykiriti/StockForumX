@@ -40,6 +40,32 @@
     margin-bottom: 30px;
 }
 
+.sort-dropdown {
+    padding: 14px 24px;
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: 3px solid #000;
+    font-weight: bold;
+    font-size: 0.9rem;
+    height: auto;
+    box-shadow: 6px 6px 0px #000;
+    transition: all 0.15s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+}
+
+.sort-dropdown:hover,
+.sort-dropdown:focus {
+    background: #1a1a1a;
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #000;
+    border-color: #ff6600;
+    color: #ff6600;
+}
+
 /* Search Bar (overriding/enhancing component styles for this page if needed) */
 /* Assuming SearchBar component handles its own styles, but ensuring container spacing */
 

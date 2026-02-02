@@ -78,26 +78,25 @@ const StockList = () => {
                 </div>
 
                 <div style={{ marginBottom: '20px' }}>
-                    <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start' }}>
                         <div style={{ flex: 1 }}>
                             <SearchBar
                                 value={searchQuery}
                                 onChange={setSearchQuery}
-                                placeholder="Search stocks by symbol or name..."
+                                placeholder="Search stocks... Indian: .NS (e.g. RELIANCE.NS) • Global: Ticker (e.g. AAPL)"
                             />
                         </div>
                         <div className="filter-section" style={{ margin: 0 }}>
                             <select
-                                className="filter-btn"
+                                className="sort-dropdown"
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                style={{ padding: '12px 20px', cursor: 'pointer', appearance: 'none', background: '#000', color: '#fff' }}
                             >
                                 <option value="symbol">A-Z</option>
-                                <option value="trending">🔥 Trending</option>
-                                <option value="bullish">🎯 Bullish</option>
-                                <option value="gainers">📈 Top Gainers</option>
-                                <option value="losers">📉 Top Losers</option>
+                                <option value="trending">Trending</option>
+                                <option value="bullish">Bullish</option>
+                                <option value="gainers">Top Gainers</option>
+                                <option value="losers">Top Losers</option>
                             </select>
                         </div>
                     </div>
