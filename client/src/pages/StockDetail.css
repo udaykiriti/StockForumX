@@ -73,7 +73,7 @@
     font-size: 5rem;
     font-weight: 900;
     margin: 0;
-    color: black;
+    color: #fff;
     line-height: 0.9;
     text-transform: uppercase;
 }
@@ -81,7 +81,7 @@
 .stock-name {
     font-size: 1.8rem;
     font-weight: 800;
-    color: black;
+    color: #fff;
 }
 
 .badge-info {
@@ -100,7 +100,7 @@
 .current-price {
     font-size: 4rem;
     font-weight: 900;
-    color: black;
+    color: #fff;
 }
 
 .price-change {
@@ -144,7 +144,7 @@
 
 .stat-label {
     font-size: 0.8rem;
-    color: black;
+    color: #000;
     font-weight: 900;
     text-transform: uppercase;
 }
@@ -152,7 +152,7 @@
 .stat-value {
     font-size: 1.4rem;
     font-weight: 900;
-    color: black;
+    color: #000;
 }
 
 /* Main Content Layout */
@@ -222,7 +222,7 @@
 
 .stock-description {
     font-size: 1rem;
-    color: black;
+    color: #fff;
     line-height: 1.6;
     font-weight: 600;
 }
@@ -246,7 +246,7 @@
     background: transparent;
     border: none;
     border-right: var(--border-width) solid var(--border-color);
-    color: black;
+    color: #fff;
     font-size: 1rem;
     font-weight: 900;
     text-transform: uppercase;

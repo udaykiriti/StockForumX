@@ -4,6 +4,7 @@
     border-bottom: 4px solid #000;
     text-align: center;
     background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    overflow-x: hidden; /* Prevent horizontal scroll from rotation */
 }
 
 .hero-title {
@@ -12,15 +13,16 @@
     text-transform: uppercase;
     color: #000;
     line-height: 0.9;
-    margin-bottom: 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0 auto 50px auto; /* Centered with bottom margin */
+    display: block; /* changed from inline-flex to block for width control */
+    width: 95%;
+    max-width: 1000px;
     background: #ff6600;
     padding: 25px 50px;
     border: 5px solid #000;
     box-shadow: 15px 15px 0px #000;
     transform: rotate(-2deg);
+    box-sizing: border-box;
 }
 
 .hero-subtitle {

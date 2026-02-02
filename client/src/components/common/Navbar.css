@@ -545,7 +545,7 @@
 
 .btn-signup {
     background: #ff6600;
-    color: #000 !important;
+    color: #fff !important;
     font-weight: 900;
     text-transform: uppercase;
     text-decoration: none;
@@ -579,7 +579,7 @@
     transform: translate(-4px, -4px);
     box-shadow: 10px 10px 0px #000;
     background: #ff8833;
-    color: #000 !important;
+    color: #fff !important;
 }
 
 .navbar-burger {
