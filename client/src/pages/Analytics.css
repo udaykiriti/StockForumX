@@ -1,79 +1,171 @@
+/* Dark Neo-Brutalist Analytics */
+.analytics-page {
+    padding: 60px 0;
+    min-height: calc(100vh - 105px);
+    background-color: #1a1a1a;
+    background-image: radial-gradient(#333 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #fff;
+}
+
 .analytics-container {
-    padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    color: var(--text-primary);
+    padding: 0 20px;
 }
 
 .analytics-header {
-    margin-bottom: 2rem;
+    text-align: center;
+    margin-bottom: 50px;
+    background: #000;
+    border: 3px solid #ff6600;
+    padding: 40px;
+    box-shadow: 10px 10px 0px #ff6600;
 }
 
 .analytics-header h1 {
-    font-size: 2rem;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 4px 4px 0px #000;
 }
 
+.analytics-header p {
+    font-size: 1.1rem;
+    color: #ccc;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Stats Grid */
 .analytics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 30px;
+    margin-bottom: 60px;
 }
 
 .stat-card {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    background: #000;
+    padding: 30px;
+    border: 3px solid #ff6600;
+    box-shadow: 8px 8px 0px #ff6600;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px #ff6600;
+    background: #111;
+    z-index: 10;
 }
 
 .stat-card h3 {
-    color: var(--text-secondary);
+    color: #ff6600;
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
 }
 
 .stat-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--text-primary);
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
 }
 
+/* Charts Section */
 .charts-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
 .chart-container {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    height: 400px;
+    background: #000;
+    padding: 30px;
+    border: 3px solid #ff6600;
+    box-shadow: 8px 8px 0px #ff6600;
+    height: 450px;
 }
 
 .chart-container h2 {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    color: #fff;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
 }
 
-@media (max-width: 768px) {
+/* Recharts Customization Overrides */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+    stroke: #333;
+}
+
+.recharts-text {
+    fill: #888 !important;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.recharts-tooltip-cursor {
+    fill: rgba(255, 102, 0, 0.1);
+}
+
+.loading-spinner {
+    text-align: center;
+    font-size: 2rem;
+    color: #ff6600;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 100px;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
     .charts-section {
         grid-template-columns: 1fr;
     }
-    
+
     .chart-container {
-        height: 300px;
+        height: 400px;
+    }
+
+    .analytics-header {
+        padding: 30px;
+    }
+
+    .analytics-header h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .analytics-page {
+        padding: 40px 0;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+    }
+
+    .chart-container {
+        padding: 15px;
+        height: 350px;
     }
 }
