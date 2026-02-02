@@ -123,31 +123,110 @@
     min-width: 100px;
 }
 
-/* Preview Avatar */
-.avatar-preview {
-    margin-top: 12px;
-    text-align: center;
+/* Avatar Upload */
+.avatar-upload-group {
+    margin-bottom: 28px;
 }
 
-.avatar-preview img {
-    width: 80px;
-    height: 80px;
+.avatar-upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.avatar-preview-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.avatar-preview-img {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--border-color);
+    border: 3px solid var(--color-primary);
 }
 
-.avatar-preview-placeholder {
-    width: 80px;
-    height: 80px;
+.avatar-placeholder-large {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    background: var(--bg-secondary);
-    display: inline-flex;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #d96f20));
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+}
+
+.avatar-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.avatar-preview-container:hover .avatar-upload-overlay {
+    opacity: 1;
+}
+
+.camera-icon {
+    color: white;
+    font-size: 24px;
+}
+
+.avatar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.btn-upload-photo,
+.btn-remove-photo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-upload-photo {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+}
+
+.btn-upload-photo:hover {
+    background: var(--color-primary-dark, #d96f20);
+    transform: translateY(-1px);
+}
+
+.btn-remove-photo {
+    background: transparent;
     color: var(--text-muted);
-    border: 2px dashed var(--border-color);
+    border: 1px solid var(--border-color);
+}
+
+.btn-remove-photo:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    border-color: #dc2626;
 }
 
 /* Responsive */

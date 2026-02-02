@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { updateProfile } from '../../services/api';
 import toast from 'react-hot-toast';
+import { FaCamera, FaTrash } from 'react-icons/fa';
 import './ProfileEdit.css';
 
 const ProfileEdit = ({ user, onClose, onSuccess }) => {
@@ -10,6 +11,8 @@ const ProfileEdit = ({ user, onClose, onSuccess }) => {
         status: user.status || ''
     });
     const [loading, setLoading] = useState(false);
+    const [avatarPreview, setAvatarPreview] = useState(user.avatar || '');
+    const fileInputRef = useRef(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,6 +20,46 @@ const ProfileEdit = ({ user, onClose, onSuccess }) => {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            toast.error('Please select an image file');
+            return;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error('Image must be less than 5MB');
+            return;
+        }
+
+        // Convert to base64
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result;
+            setAvatarPreview(base64);
+            setFormData(prev => ({
+                ...prev,
+                avatar: base64
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleRemoveAvatar = () => {
+        setAvatarPreview('');
+        setFormData(prev => ({
+            ...prev,
+            avatar: ''
+        }));
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -54,19 +97,53 @@ const ProfileEdit = ({ user, onClose, onSuccess }) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="profile-edit-form">
-                    <div className="form-group">
-                        <label htmlFor="avatar">Avatar URL</label>
-                        <input
-                            type="url"
-                            id="avatar"
-                            name="avatar"
-                            value={formData.avatar}
-                            onChange={handleChange}
-                            placeholder="https://example.com/avatar.jpg"
-                            className="form-input"
-                        />
+                    <div className="form-group avatar-upload-group">
+                        <label>Profile Photo</label>
+                        <div className="avatar-upload-wrapper">
+                            <div className="avatar-preview-container">
+                                {avatarPreview ? (
+                                    <img
+                                        src={avatarPreview}
+                                        alt="Avatar preview"
+                                        className="avatar-preview-img"
+                                    />
+                                ) : (
+                                    <div className="avatar-placeholder-large">
+                                        {user.username?.charAt(0).toUpperCase() || '?'}
+                                    </div>
+                                )}
+                                <label className="avatar-upload-overlay" title="Upload new photo">
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <FaCamera className="camera-icon" />
+                                </label>
+                            </div>
+                            <div className="avatar-actions">
+                                <button
+                                    type="button"
+                                    className="btn-upload-photo"
+                                    onClick={() => fileInputRef.current?.click()}
+                                >
+                                    <FaCamera /> Upload Photo
+                                </button>
+                                {avatarPreview && (
+                                    <button
+                                        type="button"
+                                        className="btn-remove-photo"
+                                        onClick={handleRemoveAvatar}
+                                    >
+                                        <FaTrash /> Remove
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                         <small className="form-hint">
-                            Enter a URL to your profile picture (optional)
+                            Accepted formats: JPG, PNG, GIF (max 5MB)
                         </small>
                     </div>
 
