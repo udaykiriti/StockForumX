@@ -61,12 +61,10 @@ export const SocketProvider = ({ children }) => {
         });
 
         newSocket.on('connect', () => {
-            console.log('Socket connected');
             setConnected(true);
         });
 
         newSocket.on('disconnect', () => {
-            console.log('Socket disconnected');
             setConnected(false);
         });
 

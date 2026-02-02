@@ -33,11 +33,12 @@ router.get('/leaderboard', async (req, res) => {
         const users = await User.find()
             .select('username reputation totalPredictions accuratePredictions createdAt')
             .sort({ reputation: -1 })
-            .limit(limit);
+            .limit(limit)
+            .lean();
 
         const leaderboard = users.map((user, index) => ({
             rank: index + 1,
-            ...user.toObject(),
+            ...user,
             tier: getReputationTier(user.reputation),
             accuracy: user.totalPredictions > 0
                 ? ((user.accuratePredictions / user.totalPredictions) * 100).toFixed(2)
@@ -56,14 +57,14 @@ router.get('/leaderboard', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).select('-password');
+        const user = await User.findById(req.params.id).select('-password').lean();
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         res.json({
-            ...user.toObject(),
+            ...user,
             tier: getReputationTier(user.reputation)
         });
     } catch (error) {
@@ -76,20 +77,20 @@ router.get('/:id', async (req, res) => {
 // @access  Public
 router.get('/:id/stats', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).select('-password');
+        const user = await User.findById(req.params.id).select('-password').lean();
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         // Get detailed stats
-        const predictions = await Prediction.find({ userId: user._id });
-        const questions = await Question.find({ userId: user._id });
-        const answers = await Answer.find({ userId: user._id });
+        const predictions = await Prediction.find({ userId: user._id }).lean();
+        const questions = await Question.find({ userId: user._id }).lean();
+        const answers = await Answer.find({ userId: user._id }).lean();
 
         const stats = {
             user: {
-                ...user.toObject(),
+                ...user,
                 tier: getReputationTier(user.reputation)
             },
             predictions: {

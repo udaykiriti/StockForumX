@@ -182,9 +182,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                console.log('Fetching profile for ID:', id);
                 const response = await getUserStats(id);
-                console.log('Profile data:', response.data);
 
                 if (!response.data || !response.data.user) {
                     // Handle missing data structure gracefully
