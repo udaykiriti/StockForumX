@@ -100,73 +100,86 @@ router.get('/:symbol', async (req, res) => {
 
         let stock = await Stock.findOne({ symbol });
         let quote = null;
+        let shouldFetch = true;
 
-        // 1. Try to fetch real-time data from Yahoo Finance
-        try {
-            quote = await yahooFinance.quote(symbol);
-        } catch (yahooError) {
-            Logger.warn(`Yahoo Finance quote failed for ${symbol}`, { error: yahooError.message });
-        }
-
-        let profile = {};
-        try {
-            const summary = await yahooFinance.quoteSummary(symbol, { modules: ['summaryProfile', 'summaryDetail', 'defaultKeyStatistics'] });
-            if (summary) {
-                profile = {
-                    description: summary.summaryProfile?.longBusinessSummary,
-                    industry: summary.summaryProfile?.industry,
-                    website: summary.summaryProfile?.website,
-                    dividendYield: summary.summaryDetail?.dividendYield,
-                    peRatio: summary.summaryDetail?.trailingPE,
-                    beta: summary.defaultKeyStatistics?.beta
-                };
+        // 1. Check if data is stale (older than 5 minutes)
+        if (stock) {
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+            if (stock.updatedAt > fiveMinutesAgo) {
+                shouldFetch = false;
             }
-        } catch (e) {
-            Logger.warn(`Yahoo Finance profile failed for ${symbol}`, { error: e.message });
         }
 
-        // 2. If valid quote, Upsert into Database
-        if (quote) {
-            // Note: regularMarketPrice is standard, but check alternatives
-            const currentPrice = quote.regularMarketPrice || quote.bid || stock?.currentPrice || 0;
-            const previousClose = quote.regularMarketPreviousClose || stock?.previousClose || currentPrice;
-            const name = quote.longName || quote.shortName || stock?.name || symbol;
-            const sector = quote.sector || profile.sector || stock?.sector || "General";
+        if (shouldFetch) {
+            // 2. Try to fetch real-time data from Yahoo Finance
+            try {
+                quote = await yahooFinance.quote(symbol);
+            } catch (yahooError) {
+                Logger.warn(`Yahoo Finance quote failed for ${symbol}`, { error: yahooError.message });
+            }
 
-            // Calculate change if missing
-            const change = quote.regularMarketChange || (currentPrice - previousClose);
-            const changePercent = quote.regularMarketChangePercent || (previousClose ? (change / previousClose) * 100 : 0);
+            let profile = {};
+            try {
+                // Only fetch profile if stock doesn't have it or we really need to update everything.
+                // For now, let's keep it simple and try to update if we are updating price.
+                const summary = await yahooFinance.quoteSummary(symbol, { modules: ['summaryProfile', 'summaryDetail', 'defaultKeyStatistics'] });
+                if (summary) {
+                    profile = {
+                        description: summary.summaryProfile?.longBusinessSummary,
+                        industry: summary.summaryProfile?.industry,
+                        website: summary.summaryProfile?.website,
+                        dividendYield: summary.summaryDetail?.dividendYield,
+                        peRatio: summary.summaryDetail?.trailingPE,
+                        beta: summary.defaultKeyStatistics?.beta
+                    };
+                }
+            } catch (e) {
+                Logger.warn(`Yahoo Finance profile failed for ${symbol}`, { error: e.message });
+            }
 
-            stock = await Stock.findOneAndUpdate(
-                { symbol },
-                {
-                    $set: {
-                        name,
-                        symbol,
-                        currentPrice,
-                        previousClose,
-                        change,
-                        changePercent,
-                        volume: quote.regularMarketVolume || stock?.volume || 0,
-                        marketCap: quote.marketCap || stock?.marketCap || 0,
-                        high24h: quote.regularMarketDayHigh || stock?.high24h || currentPrice,
-                        low24h: quote.regularMarketDayLow || stock?.low24h || currentPrice,
-                        sector,
-                        // New Fields
-                        peRatio: quote.trailingPE || profile.peRatio || stock?.peRatio || 0,
-                        dividendYield: quote.dividendYield || profile.dividendYield || stock?.dividendYield || 0,
-                        fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || stock?.fiftyTwoWeekHigh || 0,
-                        fiftyTwoWeekLow: quote.fiftyTwoWeekLow || stock?.fiftyTwoWeekLow || 0,
-                        description: profile.description || stock?.description || '',
-                        industry: profile.industry || stock?.industry || 'General',
-                        website: profile.website || stock?.website || ''
-                    }
-                },
-                { new: true, upsert: true, setDefaultsOnInsert: true }
-            );
+            // 3. If valid quote, Upsert into Database
+            if (quote) {
+                // Note: regularMarketPrice is standard, but check alternatives
+                const currentPrice = quote.regularMarketPrice || quote.bid || stock?.currentPrice || 0;
+                const previousClose = quote.regularMarketPreviousClose || stock?.previousClose || currentPrice;
+                const name = quote.longName || quote.shortName || stock?.name || symbol;
+                const sector = quote.sector || profile.sector || stock?.sector || "General";
+
+                // Calculate change if missing
+                const change = quote.regularMarketChange || (currentPrice - previousClose);
+                const changePercent = quote.regularMarketChangePercent || (previousClose ? (change / previousClose) * 100 : 0);
+
+                stock = await Stock.findOneAndUpdate(
+                    { symbol },
+                    {
+                        $set: {
+                            name,
+                            symbol,
+                            currentPrice,
+                            previousClose,
+                            change,
+                            changePercent,
+                            volume: quote.regularMarketVolume || stock?.volume || 0,
+                            marketCap: quote.marketCap || stock?.marketCap || 0,
+                            high24h: quote.regularMarketDayHigh || stock?.high24h || currentPrice,
+                            low24h: quote.regularMarketDayLow || stock?.low24h || currentPrice,
+                            sector,
+                            // New Fields
+                            peRatio: quote.trailingPE || profile.peRatio || stock?.peRatio || 0,
+                            dividendYield: quote.dividendYield || profile.dividendYield || stock?.dividendYield || 0,
+                            fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || stock?.fiftyTwoWeekHigh || 0,
+                            fiftyTwoWeekLow: quote.fiftyTwoWeekLow || stock?.fiftyTwoWeekLow || 0,
+                            description: profile.description || stock?.description || '',
+                            industry: profile.industry || stock?.industry || 'General',
+                            website: profile.website || stock?.website || ''
+                        }
+                    },
+                    { new: true, upsert: true, setDefaultsOnInsert: true }
+                );
+            }
         }
 
-        // 3. If stock still doesn't exist (neither in DB nor valid in Yahoo), use Mock Fallback
+        // 4. If stock still doesn't exist (neither in DB nor valid in Yahoo), use Mock Fallback
         if (!stock) {
             Logger.debug(`Generating mock data for ${symbol}`);
             const basePrice = Math.random() * 200 + 50;
@@ -185,7 +198,7 @@ router.get('/:symbol', async (req, res) => {
             });
         }
 
-        // 4. Get additional stats
+        // 5. Get additional stats
         const questionCount = await Question.countDocuments({ stockId: stock._id });
         const predictionCount = await Prediction.countDocuments({ stockId: stock._id });
 
@@ -234,7 +247,7 @@ router.get('/:symbol/trending', async (req, res) => {
 // @route   GET /api/stocks/:symbol/history
 // @desc    Get historical price data for a stock
 // @access  Public
-router.get('/:symbol/history', async (req, res) => {
+router.get('/:symbol/history', redisCache.route({ expire: 600 }), async (req, res) => {
     try {
         const symbol = req.params.symbol.toUpperCase();
         const stock = await Stock.findOne({ symbol });
