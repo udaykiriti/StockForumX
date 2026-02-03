@@ -43,12 +43,18 @@
 
 ---
 
+> [!WARNING]
+> This application deals with financial data. All predictions and discussions are for informational purposes only.
+
+> [!TIP]
+> Use the "Detailed Documentation" section to understand the architecture before contributing.
+
 ## Features
 
 - **Real-time Chat** - Live discussions per stock using WebSockets.
 - **Q&A System** - Time-expiring answers with TTL indexes.
 - **Prediction System** - Track price predictions with accuracy scoring.
-- **Smart Reputation** - Calculated as `score = accuracy * log(total_predictions + 1)`.
+- **Smart Reputation** - Calculated based on accuracy and history.
 - **Live Analytics** - Trending stocks, questions, and insights.
 - **Manipulation Detection** - Flag pump behavior and duplicate predictions.
 - **Similar Question Detection** - Prevent duplicates using TF-IDF logic.
@@ -265,4 +271,4 @@ Contributions are welcome! Please follow these steps:
 
 ## License
 
-MIT
+This project is licensed under the GNU General Public License v2.0 (GPL-2.0). See the [LICENSE](LICENSE) file for details.

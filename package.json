@@ -30,7 +30,7 @@
     "real-time"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "GPL-2.0",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
