@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getStock, getQuestions, toggleWatchlist, getWatchlist, getStockHistory, getPredictions } from '../services/api';
 import { useSocket } from '../context/SocketContext';
@@ -129,6 +129,14 @@ const StockDetail = () => {
         );
     }
 
+    const MemoizedChart = useMemo(() => (
+        <CandlestickChart
+            data={chartData}
+            volumeData={volumeData}
+            height={450}
+        />
+    ), [chartData, volumeData]);
+
     return (
         <div className="stock-detail-page fade-in">
             <div className="stock-header-section">
@@ -166,11 +174,7 @@ const StockDetail = () => {
                 <div className="stock-content">
                     <main className="stock-main">
                         {/* Interactive Price History Chart */}
-                        <CandlestickChart
-                            data={chartData}
-                            volumeData={volumeData}
-                            height={450}
-                        />
+                        {MemoizedChart}
 
                         <div className="tabs-container">
                             <div className="tabs">

@@ -67,6 +67,7 @@ const predictionSchema = new mongoose.Schema({
 predictionSchema.index({ stockId: 1, createdAt: -1 });
 predictionSchema.index({ userId: 1 });
 predictionSchema.index({ targetDate: 1, isEvaluated: 1 });
+predictionSchema.index({ createdAt: -1 }); // Global feed
 
 const Prediction = mongoose.model('Prediction', predictionSchema);
 

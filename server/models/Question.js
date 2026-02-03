@@ -54,6 +54,8 @@ const questionSchema = new mongoose.Schema({
 questionSchema.index({ stockId: 1, createdAt: -1 });
 questionSchema.index({ userId: 1 });
 questionSchema.index({ tags: 1 });
+questionSchema.index({ createdAt: -1 }); // Global feed
+questionSchema.index({ views: -1, answerCount: -1 }); // Trending by engagement
 
 const Question = mongoose.model('Question', questionSchema);
 
