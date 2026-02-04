@@ -113,7 +113,7 @@ func startSnapshotWorker(db *mongo.Database) {
 }
 
 func takeSnapshots(db *mongo.Database) {
-	fmt.Println("🚀 Taking Portfolio Snapshots...")
+	fmt.Println("Taking Portfolio Snapshots...")
 	
 	usersColl := db.Collection("users")
 	holdingsColl := db.Collection("holdings")
@@ -166,7 +166,7 @@ func takeSnapshots(db *mongo.Database) {
 			log.Printf("Snapshot failed for user %s: %v", user.ID.Hex(), err)
 		}
 	}
-	fmt.Println("✅ Snapshots complete.")
+	fmt.Println("Snapshots complete.")
 }
 
 func calculateDiversification(db *mongo.Database, userId primitive.ObjectID) ([]Diversification, error) {

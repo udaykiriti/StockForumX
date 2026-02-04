@@ -14,10 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// ==========================================
 // Domain Models
-// ==========================================
-
 // Alert represents a user's price alert settings
 type Alert struct {
 	ID          primitive.ObjectID `bson:"_id"`
@@ -38,10 +35,7 @@ type Notification struct {
 	UpdatedAt time.Time          `bson:"updatedAt"`
 }
 
-// ==========================================
 // Main Function
-// ==========================================
-
 func main() {
 	loadEnvironment()
 
@@ -60,10 +54,7 @@ func main() {
 	watchPriceUpdates(stocksColl, alertsColl, notifsColl)
 }
 
-// ==========================================
 // Database Helpers
-// ==========================================
-
 func loadEnvironment() {
 	if err := godotenv.Load("../../server/.env"); err != nil {
 		log.Println("Warning: Could not load .env file, checking environment variables")
@@ -92,9 +83,7 @@ func disconnectDatabase(client *mongo.Client) {
 	}
 }
 
-// ==========================================
 // Core Logic: Watcher & Processor
-// ==========================================
 
 func watchPriceUpdates(stocksColl, alertsColl, notifsColl *mongo.Collection) {
 	// Define conditions to watch: Only listen for 'update' events where 'currentPrice' changes
@@ -178,9 +167,7 @@ func checkAndProcessAlerts(alertsColl, notifsColl *mongo.Collection, symbol stri
 	}
 }
 
-// ==========================================
 // Alert Execution
-// ==========================================
 
 func executeAlert(alertsColl, notifsColl *mongo.Collection, alert Alert, currentPrice float64) {
 	fmt.Printf("Alert Triggered! %s: Target $%.2f, Current $%.2f (User: %s)\n",
