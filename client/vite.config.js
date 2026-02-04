@@ -23,6 +23,7 @@ export default defineConfig({
                 manualChunks: {
                     vendor: ['react', 'react-dom', 'react-router-dom'],
                     charts: ['recharts', 'lightweight-charts'],
+                    icons: ['react-icons'],
                     utils: ['axios', 'date-fns']
                 }
             }

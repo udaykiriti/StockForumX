@@ -112,29 +112,41 @@ router.get('/:symbol', async (req, res) => {
 
         if (shouldFetch) {
             // 2. Try to fetch real-time data from Yahoo Finance
-            try {
-                quote = await yahooFinance.quote(symbol);
-            } catch (yahooError) {
-                Logger.warn(`Yahoo Finance quote failed for ${symbol}`, { error: yahooError.message });
-            }
-
             let profile = {};
+            
+            // 2. Parallelize External API Calls
             try {
-                // Only fetch profile if stock doesn't have it or we really need to update everything.
-                // For now, let's keep it simple and try to update if we are updating price.
-                const summary = await yahooFinance.quoteSummary(symbol, { modules: ['summaryProfile', 'summaryDetail', 'defaultKeyStatistics'] });
-                if (summary) {
-                    profile = {
-                        description: summary.summaryProfile?.longBusinessSummary,
-                        industry: summary.summaryProfile?.industry,
-                        website: summary.summaryProfile?.website,
-                        dividendYield: summary.summaryDetail?.dividendYield,
-                        peRatio: summary.summaryDetail?.trailingPE,
-                        beta: summary.defaultKeyStatistics?.beta
-                    };
+                const [quoteResult, summaryResult] = await Promise.allSettled([
+                    yahooFinance.quote(symbol),
+                    yahooFinance.quoteSummary(symbol, { modules: ['summaryProfile', 'summaryDetail', 'defaultKeyStatistics'] })
+                ]);
+
+                // Process Quote Result
+                if (quoteResult.status === 'fulfilled') {
+                    quote = quoteResult.value;
+                } else {
+                    Logger.warn(`Yahoo Finance quote failed for ${symbol}`, { error: quoteResult.reason.message });
                 }
-            } catch (e) {
-                Logger.warn(`Yahoo Finance profile failed for ${symbol}`, { error: e.message });
+
+                // Process Summary Result
+                if (summaryResult.status === 'fulfilled') {
+                    const summary = summaryResult.value;
+                    if (summary) {
+                        profile = {
+                            description: summary.summaryProfile?.longBusinessSummary,
+                            industry: summary.summaryProfile?.industry,
+                            website: summary.summaryProfile?.website,
+                            dividendYield: summary.summaryDetail?.dividendYield,
+                            peRatio: summary.summaryDetail?.trailingPE,
+                            beta: summary.defaultKeyStatistics?.beta
+                        };
+                    }
+                } else {
+                    Logger.warn(`Yahoo Finance profile failed for ${symbol}`, { error: summaryResult.reason.message });
+                }
+
+            } catch (err) {
+                 Logger.error(`Unexpected error in parallel fetch for ${symbol}`, { error: err.message });
             }
 
             // 3. If valid quote, Upsert into Database
