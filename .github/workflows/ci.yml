@@ -16,9 +16,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          # Cache depends on package-lock.json which is missing in client (and server).
+          # Removing strict cache path to prevent workflow failure.
           cache: 'npm'
-          cache-dependency-path: client/package-lock.json
-      - run: npm ci
+          # cache-dependency-path: client/package-lock.json
+          # Note: 'npm install' is used instead of 'npm ci' because package-lock.json is not present.
+      - run: npm install
         working-directory: ./client
       - run: npm run build
         working-directory: ./client
