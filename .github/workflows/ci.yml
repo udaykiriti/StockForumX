@@ -26,6 +26,11 @@ jobs:
       - name: Install dependencies
         working-directory: ./client
         run: npm ci --legacy-peer-deps --force
+      - name: Rebuild Rollup binaries
+        working-directory: ./client
+        run: |
+          npm rebuild rollup --force
+          npm ls @rollup/rollup-linux-x64-gnu || npm install @rollup/rollup-linux-x64-gnu --force
       - name: Build client
         working-directory: ./client
         run: npm run build
