@@ -6,14 +6,14 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 FROM alpine:latest
 
 WORKDIR /app
 COPY --from=builder /app/main .
 
-# The binary expects .env to be in the parent's parent directory
-# But in Docker, we should use environment variables instead.
+# Install ca-certificates for HTTPS
+RUN apk --no-cache add ca-certificates
 
 CMD ["./main"]

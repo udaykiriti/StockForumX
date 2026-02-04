@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - stockforumx-network
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    networks:
+      - stockforumx-network
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/stockforumx
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - stockforumx-network
+
+  # Services
+  alert-engine:
+    build: ./services/alert-engine
+    networks:
+      - stockforumx-network
+    depends_on:
+      - backend
+
+  price-updater:
+    build: ./services/price-updater
+    networks:
+      - stockforumx-network
+    depends_on:
+      - backend
+
+  analytics-service:
+    build: ./services/analytics-service
+    networks:
+      - stockforumx-network
+    depends_on:
+      - backend
+
+  oracle-service:
+    build: ./services/oracle-service
+    networks:
+      - stockforumx-network
+    depends_on:
+      - backend
+
+  sentiment-service:
+    build: ./services/sentiment-service
+    networks:
+      - stockforumx-network
+    depends_on:
+      - backend
+
+  # Databases
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - stockforumx-network
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - stockforumx-network
+
+networks:
+  stockforumx-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  redis_data:
