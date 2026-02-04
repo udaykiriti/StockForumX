@@ -1,27 +1,27 @@
 :root {
   /* Premium Neo-Brutalist Palette */
-  --color-primary: #ff5c00;
+  --color-primary: #FFA726; /* Light Orange */
   --color-accent: #f0ff00;
   --color-success: #00ff66;
   --color-danger: #ff003d;
   --color-info: #00d1ff;
 
   /* Backgrounds - Dark Theme */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #222;
-  --bg-tertiary: #2a2a2a;
-  --bg-dark: #000000;
+  --bg-primary: #2C2C2C; /* Light Dark */
+  --bg-secondary: #333333;
+  --bg-tertiary: #3D3D3D;
+  --bg-dark: #1E1E1E;
 
   /* Text - Light on Dark */
   --text-primary: #ffffff;
-  --text-inverted: #000000;
+  --text-inverted: #121212;
 
   /* Architecture */
   --border-width: 3px;
-  --border-color: #000000;
-  --shadow-hard: 6px 6px 0px #000000;
-  --shadow-hard-lg: 10px 10px 0px #000000;
-  --shadow-pushed: 2px 2px 0px #000000;
+  --border-color: #111111; /* Softened Black */
+  --shadow-hard: 6px 6px 0px #111111;
+  --shadow-hard-lg: 10px 10px 0px #111111;
+  --shadow-pushed: 2px 2px 0px #111111;
 
   /* Fluid Typography */
   --font-size-xs: clamp(0.7rem, 0.6rem + 0.5vw, 0.8rem);

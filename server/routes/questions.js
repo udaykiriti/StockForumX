@@ -168,22 +168,22 @@ router.post('/', protect, async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
     try {
-        const question = await Question.findById(req.params.id)
-            .populate('userId', 'username reputation')
-            .populate('stockId', 'symbol name');
+        // Optimizing: Run update and answer fetch in parallel
+        // 1. increment views transactionally/atomically
+        // 2. fetch answers
+
+        const [question, answers] = await Promise.all([
+            Question.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } }, { new: true })
+                .populate('userId', 'username reputation')
+                .populate('stockId', 'symbol name'),
+            Answer.find({ questionId: req.params.id })
+                .populate('userId', 'username reputation')
+                .sort({ isAccepted: -1, upvotes: -1, createdAt: -1 })
+        ]);
 
         if (!question) {
             return res.status(404).json({ message: 'Question not found' });
         }
-
-        // Increment views
-        question.views += 1;
-        await question.save();
-
-        // Get answers
-        const answers = await Answer.find({ questionId: question._id })
-            .populate('userId', 'username reputation')
-            .sort({ isAccepted: -1, upvotes: -1, createdAt: -1 });
 
         res.json({ question, answers });
     } catch (error) {

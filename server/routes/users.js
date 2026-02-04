@@ -84,9 +84,12 @@ router.get('/:id/stats', async (req, res) => {
         }
 
         // Get detailed stats
-        const predictions = await Prediction.find({ userId: user._id }).lean();
-        const questions = await Question.find({ userId: user._id }).lean();
-        const answers = await Answer.find({ userId: user._id }).lean();
+        // Get detailed stats - Parallel execution
+        const [predictions, questions, answers] = await Promise.all([
+            Prediction.find({ userId: user._id }).lean(),
+            Question.find({ userId: user._id }).lean(),
+            Answer.find({ userId: user._id }).lean()
+        ]);
 
         const stats = {
             user: {
