@@ -8,9 +8,18 @@ axios.defaults.timeout = APP_CONFIG.API_TIMEOUT;
 
 // Add a response interceptor
 axios.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        if (import.meta.env.MODE === 'development') {
+            console.log(`[API Response] ${response.config.method.toUpperCase()} ${response.config.url}`, response.data);
+        }
+        return response;
+    },
     async (error) => {
         const originalRequest = error.config;
+
+        if (import.meta.env.MODE === 'development') {
+            console.error('[API Error]', error.response?.data || error.message);
+        }
 
         // Handle 401: Auto-logout
         if (error.response && error.response.status === 401) {
@@ -48,6 +57,11 @@ axios.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+
+        if (import.meta.env.MODE === 'development') {
+            console.log(`[API Request] ${config.method.toUpperCase()} ${config.url}`);
+        }
+
         return config;
     },
     (error) => Promise.reject(error)
