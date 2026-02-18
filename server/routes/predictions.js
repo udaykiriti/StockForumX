@@ -98,6 +98,11 @@ router.post('/', protect, async (req, res) => {
             '1m': 30 * 24 * 60 * 60 * 1000
         };
 
+        const validTimeframes = ['1h', '1d', '1w', '1m'];
+        if (!validTimeframes.includes(timeframe)) {
+            return res.status(400).json({ message: 'Invalid timeframe' });
+        }
+
         const targetDate = new Date(Date.now() + timeframeMap[timeframe]);
 
         const prediction = await Prediction.create({

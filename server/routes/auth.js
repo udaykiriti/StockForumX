@@ -236,7 +236,7 @@ router.post('/login-otp-init', asyncHandler(async (req, res, next) => {
 // @route   POST /api/auth/login-otp-verify
 // @desc    Login using OTP
 // @access  Public
-router.post('/login-otp-init/verify', asyncHandler(async (req, res, next) => {
+router.post('/login-otp-verify', asyncHandler(async (req, res, next) => {
     const { email, otp } = req.body;
     const user = await User.findOne({
         email,
