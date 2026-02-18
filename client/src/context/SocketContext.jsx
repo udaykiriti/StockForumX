@@ -19,7 +19,9 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
         // Use explicit URL to avoid proxy issues
         const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        console.log(' Connecting to WebSocket at:', SOCKET_URL);
+        if (import.meta.env.MODE === 'development') {
+            console.log(' Connecting to WebSocket at:', SOCKET_URL);
+        }
 
         const newSocket = io(SOCKET_URL, {
             transports: ['websocket', 'polling'], // Try websocket first if possible? No, standard array is safer.
@@ -38,7 +40,9 @@ export const SocketProvider = ({ children }) => {
         });
 
         newSocket.on('connect', () => {
-            console.log(' WebSocket Connected!', newSocket.id);
+            if (import.meta.env.MODE === 'development') {
+                console.log(' WebSocket Connected!', newSocket.id);
+            }
             setConnected(true);
         });
 
