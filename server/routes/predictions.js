@@ -1,5 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
+
 import { protect } from '../middleware/auth.js';
 import Prediction from '../models/Prediction.js';
 import Stock from '../models/Stock.js';
