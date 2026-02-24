@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/actions/workflow/status/udaykiriti/StockForumX/ci.yml?label=CI&style=for-the-badge&logo=github" />
-  <img src="https://img.shields.io/github/actions/workflow/status/udaykiriti/StockForumX/docker-publish.yml?label=Docker%20Build&style=for-the-badge&logo=docker" />
   <img src="https://img.shields.io/github/license/udaykiriti/StockForumX?label=License&style=for-the-badge" />
   <img src="https://img.shields.io/github/stars/udaykiriti/StockForumX?label=Stars&style=for-the-badge&logo=github" />
   <img src="https://img.shields.io/github/forks/udaykiriti/StockForumX?label=Forks&style=for-the-badge&logo=github" />
