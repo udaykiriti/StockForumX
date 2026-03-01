@@ -137,7 +137,7 @@ StockForumX/
 
 ### Running the Application
 
- You can run both the client and server concurrently with a single command:
+You can run both the client and server concurrently with a single command:
 
 ```bash
 npm run dev
@@ -150,7 +150,8 @@ npm run dev:server  # Backend on http://localhost:5000
 npm run dev:client  # Frontend on http://localhost:5173
 ```
 
-### Running with Docker (Recommended)
+### Docker Quick Start
+
 This is the easiest way to run the entire application (Frontend, Backend, Database, Services) without installing Node.js, Go, or MongoDB locally.
 
 #### 1. Install Docker
